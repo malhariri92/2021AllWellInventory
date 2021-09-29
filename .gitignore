@@ -1,0 +1,13 @@
+
+BackEnd/AllwellInventory/AllwellInventory/obj/project.nuget.cache
+BackEnd/AllwellInventory/AllwellInventory/obj/project.nuget.cache
+BackEnd/AllwellInventory/AllwellInventory/obj/Debug/net5.0/apphost.exe
+BackEnd/AllwellInventory/AllwellInventory/obj/Debug/net5.0/AllwellInventory.pdb
+BackEnd/AllwellInventory/AllwellInventory/obj/Debug/net5.0/AllwellInventory.genruntimeconfig.cache
+BackEnd/AllwellInventory/AllwellInventory/obj/Debug/net5.0/AllwellInventory.dll
+*.cache
+*.dll
+*.pdb
+*.txt
+*.v2
+BackEnd/AllwellInventory/.vs/AllwellInventory/v16/.suo
