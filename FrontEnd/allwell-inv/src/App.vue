@@ -2,6 +2,7 @@
   <div class="" id="mainPage">
     <div>
       app.vue content
+      <button @click="doRoute('inventory')">Inventory</button>
     </div>
 
     <router-view/>
@@ -22,6 +23,8 @@ export default {
     function doRoute(whereTo) {
       if (whereTo === 'home') {
         router.push('/');
+      } else if (whereTo === 'inventory') {
+        router.push('/inventory')
       }
     }
 
