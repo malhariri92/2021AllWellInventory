@@ -1,7 +1,6 @@
 <template>
   <div class="" id="mainPage">
     <div>
-      app.vue content
     </div>
 
     <router-view/>
@@ -17,11 +16,15 @@ export default {
   setup() {
     const router = useRouter();
 
-    doRoute('home');
+    doRoute('login');
 
     function doRoute(whereTo) {
       if (whereTo === 'home') {
         router.push('/');
+      }
+      else if (whereTo === 'login')
+      {
+        router.push('/Login');
       }
     }
 
