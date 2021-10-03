@@ -1,79 +1,107 @@
 <template>
   <div>
-   <div class="login-container w3-container w3-light-grey w3-round-xxlarge" title="LogIn">
-       <h2>Login</h2>
-       <div class="input-field">
-    <font-awesome-icon icon="user" class="icons" />
-    <input type="text" v-model="state.userName" placeholder="Username">
+    <div
+      class="login-container w3-container w3-light-grey w3-round-xxlarge"
+      title="LogIn"
+    >
+      <h2>Login</h2>
+      <div class="input-field">
+        <font-awesome-icon icon="user" class="icons" />
+        <input type="text" v-model="state.userName" placeholder="Username" />
+      </div>
+      <div v-if="state.isUserEmpty">
+        <p class="font-color-red">Please enter your username</p>
+      </div>
+      <div class="input-field">
+        <font-awesome-icon icon="lock" class="icons" />
+        <input
+          type="password"
+          v-model="state.password"
+          placeholder="Password"
+        />
+      </div>
+      <div v-if="state.isPasswordEmpty">
+        <p class="font-color-red">Please enter your password</p>
+      </div>
+      <div v-if="!state.isValidUser">
+        <p class="font-color-red">Invalid username or password</p>
+      </div>
+      <button
+        @click="validateUser()"
+        class="w3-button w3-round-xxlarge w3-blue w3-hover-cyan">
+        LOGIN
+      </button>
     </div>
-    <div v-if="state.isUserEmpty">
-      <p class="font-color-red">Please enter your username</p>
+    <div v-if="JSON.stringify(state.employee) != 'false' && state.employee['id'] != 0" 
+    class="w3-card w3-pale-green" style="width:50%; margin:auto">
+        <p>id: {{ state.employee['id'] }}</p>
+        <p>fName: {{ state.employee['fName'] }}</p>
+        <p>lName: {{ state.employee['lName'] }}</p>
+        <p>username: {{ state.employee['username'] }}</p>
+        <p>password: {{ state.employee['password'] }}</p>
+        <p>isAdmin: {{ state.employee['isAdmin'] }}</p>
     </div>
-    <div class="input-field">
-      <font-awesome-icon icon="lock" class="icons" />
-    <input type="password" v-model="state.password" placeholder="Password">
-    </div>
-    <div v-if="state.isPasswordEmpty">
-       <p class="font-color-red">Please enter your password</p>
-    </div>
-   
-    <button @click="validateUser()" class="w3-button w3-round-xxlarge w3-blue w3-hover-cyan"> LOGIN</button>
-</div>
-<div>
-  <p class="font-color-green">{{ state.inProcess }}</p>
-</div>
   </div>
 </template>
 
 <script>
-  import { reactive } from 'vue';
+import { reactive } from "vue";
+import { repository } from "@/store/repository.js";
 
-  export default {
-    name: 'Login',
+export default {
+  name: "Login",
 
-    setup() {
-      const state = reactive({
-        userName:'',
-        password:'',
-        isUserEmpty: false,
-        isPasswordEmpty: false,
-        inProcess: 'The user name and password are being validated now',
-      });
+  setup() {
+    const state = reactive({
+      userName: "",
+      password: "",
+      isUserEmpty: false,
+      isPasswordEmpty: false,
+      employee: {'id':0},
+      isValidUser: true,
+    });
 
-      /**
-       * check if the username or password are empty 
-       * to display error messages
-       */
-     function validateUser(){
-       if(state.userName === ''){
-         state.isUserEmpty = true;
-         state.isPasswordEmpty = false;
-       }
-       else if(state.password === '')
-       {
-         state.isUserEmpty = false;
-         state.isPasswordEmpty = true;
-       }
-       else
-       {
-         state.isUserEmpty = false;
-         state.isPasswordEmpty = false;
-         doValidateUser();
-       }
-     }
-        /**
-         * do the actual validation for user.
-         */
-       function doValidateUser(){
-          
-       }
-      return {
-        state,
-        validateUser,
-        doValidateUser,
+    const { login } = repository();
+
+    /**
+     * check if the username or password are empty
+     * to display error messages
+     */
+    function validateUser() {
+      if (state.userName === "") {
+        state.isUserEmpty = true;
+        state.isPasswordEmpty = false;
+        state.isValidUser = true;
+      } else if (state.password === "") {
+        state.isUserEmpty = false;
+        state.isPasswordEmpty = true;
+        state.isValidUser = true;
+      } else {
+        state.isUserEmpty = false;
+        state.isPasswordEmpty = false;
+        doValidateUser();
       }
     }
-  }
+    /**
+     * do the actual validation for user.
+     */
+    async function doValidateUser() {
+      state.employee = await login(state.userName, state.password);
+      
+      if (JSON.stringify(state.employee) === "false") {
+        state.isValidUser = false;
+      } else {
+        state.isValidUser = true;
+      }
+    }
+
+    return {
+      state,
+      validateUser,
+      doValidateUser,
+    };
+  },
+};
 </script>
 
 <style scoped>
@@ -85,7 +113,7 @@
   justify-content: center;
   align-items: center;
 }
-f.login-containerorm h2 {
+.login-container h2 {
   font-weight: 600;
   font-size: 2.2rem;
   color: #444;
@@ -118,9 +146,8 @@ f.login-containerorm h2 {
   margin: auto;
 }
 button {
-    font-weight: bold;
-    margin: 15px 0;
-    width: 80%;
+  font-weight: bold;
+  margin: 15px 0;
+  width: 80%;
 }
-
 </style>
