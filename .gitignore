@@ -11,3 +11,5 @@ BackEnd/AllwellInventory/AllwellInventory/obj/Debug/net5.0/AllwellInventory.dll
 *.txt
 *.v2
 BackEnd/AllwellInventory/.vs/AllwellInventory/v16/.suo
+BackEnd/AllwellInventory/AllwellInventory/bin/Debug/net5.0/AllwellInventory.deps.json
+BackEnd/AllwellInventory/AllwellInventory/AllwellInventory.csproj
