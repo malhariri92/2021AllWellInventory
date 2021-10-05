@@ -1,7 +1,9 @@
 <template>
   <div>
-    <h1>All Well Inventory System</h1>
+    <h1 class="color-red">All Well Inventory System</h1>
     <h2>This is a placeholder home page</h2>
+
+    <button class="w3-button w3-card-4 w3-circle button-close"></button>
   </div>
 </template>
 
@@ -24,4 +26,7 @@
 </script>
 
 <style scoped>
+button.button-close {
+  background-color: var(--green);
+}
 </style>
