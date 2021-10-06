@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\thewo\\Documents\\GitHub\\2021AllwellInventory\\BackEnd\\AllwellInventory\\AllwellInventory\\AllwellInventory.csproj": {}
+    "C:\\Users\\malha\\Desktop\\2021Allwell Inventory\\2021AllwellInventory\\BackEnd\\AllwellInventory\\AllwellInventory\\AllwellInventory.csproj": {}
   },
   "projects": {
-    "C:\\Users\\thewo\\Documents\\GitHub\\2021AllwellInventory\\BackEnd\\AllwellInventory\\AllwellInventory\\AllwellInventory.csproj": {
+    "C:\\Users\\malha\\Desktop\\2021Allwell Inventory\\2021AllwellInventory\\BackEnd\\AllwellInventory\\AllwellInventory\\AllwellInventory.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\thewo\\Documents\\GitHub\\2021AllwellInventory\\BackEnd\\AllwellInventory\\AllwellInventory\\AllwellInventory.csproj",
+        "projectUniqueName": "C:\\Users\\malha\\Desktop\\2021Allwell Inventory\\2021AllwellInventory\\BackEnd\\AllwellInventory\\AllwellInventory\\AllwellInventory.csproj",
         "projectName": "AllwellInventory",
-        "projectPath": "C:\\Users\\thewo\\Documents\\GitHub\\2021AllwellInventory\\BackEnd\\AllwellInventory\\AllwellInventory\\AllwellInventory.csproj",
-        "packagesPath": "C:\\Users\\thewo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\thewo\\Documents\\GitHub\\2021AllwellInventory\\BackEnd\\AllwellInventory\\AllwellInventory\\obj\\",
+        "projectPath": "C:\\Users\\malha\\Desktop\\2021Allwell Inventory\\2021AllwellInventory\\BackEnd\\AllwellInventory\\AllwellInventory\\AllwellInventory.csproj",
+        "packagesPath": "C:\\Users\\malha\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\malha\\Desktop\\2021Allwell Inventory\\2021AllwellInventory\\BackEnd\\AllwellInventory\\AllwellInventory\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\thewo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\malha\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -83,7 +83,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     }
