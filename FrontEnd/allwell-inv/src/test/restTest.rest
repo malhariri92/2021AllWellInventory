@@ -1,0 +1,8 @@
+###
+GET https://localhost:44364/inventory/type  HTTP/1.1
+
+###
+GET https://localhost:44364/inventory/productLite  HTTP/1.1
+
+###
+GET https://localhost:44364/api/Employee/mwolf/flowm  HTTP/1.1

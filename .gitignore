@@ -1,3 +1,26 @@
+.DS_Store
+node_modules
+/dist
+
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
 BackEnd/AllwellInventory/AllwellInventory/obj/project.nuget.cache
 BackEnd/AllwellInventory/AllwellInventory/obj/project.nuget.cache
@@ -11,3 +34,9 @@ BackEnd/AllwellInventory/AllwellInventory/obj/Debug/net5.0/AllwellInventory.dll
 *.txt
 *.v2
 BackEnd/AllwellInventory/.vs/AllwellInventory/v16/.suo
+BackEnd/AllwellInventory/AllwellInventory/bin/Debug/net5.0/AllwellInventory.deps.json
+BackEnd/AllwellInventory/AllwellInventory/AllwellInventory.csproj
+*.v2
+BackEnd/AllwellInventory/.vs/AllwellInventory/DesignTimeBuild/.dtbcache.v2
+BackEnd/AllwellInventory/.vs/AllwellInventory/DesignTimeBuild/.dtbcache.v2
+BackEnd/AllwellInventory/AllwellInventory/bin/Debug/net5.0/AllwellInventory.dll

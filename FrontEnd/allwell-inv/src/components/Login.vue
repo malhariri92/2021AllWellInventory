@@ -32,20 +32,12 @@
         LOGIN
       </button>
     </div>
-    <div v-if="JSON.stringify(state.employee) != 'false' && state.employee['id'] != 0" 
-    class="w3-card w3-pale-green" style="width:50%; margin:auto">
-        <p>id: {{ state.employee['id'] }}</p>
-        <p>fName: {{ state.employee['fName'] }}</p>
-        <p>lName: {{ state.employee['lName'] }}</p>
-        <p>username: {{ state.employee['username'] }}</p>
-        <p>password: {{ state.employee['password'] }}</p>
-        <p>isAdmin: {{ state.employee['isAdmin'] }}</p>
-    </div>
   </div>
 </template>
 
 <script>
-import { reactive } from "vue";
+import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
 import { repository } from "@/store/repository.js";
 
 export default {
@@ -60,6 +52,8 @@ export default {
       employee: {'id':0},
       isValidUser: true,
     });
+
+    const router = useRouter();
 
     const { login } = repository();
 
@@ -87,11 +81,13 @@ export default {
      */
     async function doValidateUser() {
       state.employee = await login(state.userName, state.password);
+
+
       
       if (JSON.stringify(state.employee) === "false") {
         state.isValidUser = false;
       } else {
-        state.isValidUser = true;
+        router.push('/inventory');
       }
     }
 

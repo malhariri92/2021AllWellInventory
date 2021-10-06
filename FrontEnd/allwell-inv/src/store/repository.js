@@ -1,23 +1,57 @@
 import { ref } from 'vue';
 
 export function repository() {
-    const employee = ref({});
+  const productLites = ref([]);
+  const productDetail = ref({});
+  const employee = ref({});
 
-    async function login(userName, password) {
-        const url = 'https://localhost:5001/api/Employee/' + userName + '/' + password;
+  async function getProductLites() {
+    const url = 'https://localhost:44364/inventory/productLite';
+    
+    productLites.value = [];
 
-        employee.value = {};
+    await fetch(url)
+      .then(response => response.json())
+      .then(function (data) {
+        productLites.value = data;
+      })
 
-        await fetch(url)
-            .then(response => response.json())
-            .then(function (data) {
-                employee.value = data;
-            })
+      return productLites.value;
+  }
 
-        return employee.value;
-    }
+  async function getProductDetail(productId) {
+    const url = 'https://localhost:44364/inventory/product/' + productId;
+    
+    productDetail.value = {};
 
-    return {
-        login
-    }
+    await fetch(url)
+      .then(response => response.json())
+      .then(function (data) {
+        productDetail.value = data;
+      })
+      
+      return productDetail.value;
+  }
+
+  async function login(userName, password) {
+    const url = 'https://localhost:44364/api/Employee/' + userName + '/' + password;
+
+    employee.value = {};
+
+    await fetch(url)
+      .then(response => response.json())
+      .then(function (data) {
+        console.log(data);
+        employee.value = data;
+      })
+
+    return employee.value;
+
+  }
+
+  return {
+    getProductLites,
+    getProductDetail,
+    login
+  }
 }
