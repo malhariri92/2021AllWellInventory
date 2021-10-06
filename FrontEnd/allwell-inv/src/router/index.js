@@ -1,27 +1,30 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from '../components/Home.vue';
-<<<<<<< HEAD
+//import Home from '../components/Home.vue';
 import Inventory from '../components/Inventory.vue';
-=======
 import Login from '../components/Login.vue';
->>>>>>> Mutasem-branch
+import ProductAddEdit from '../components/ProductAddEdit.vue';
+import EmployeeAddEdit from '../components/EmployeeAddEdit.vue';
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'Login',
+    component: Login
   },
   {
-<<<<<<< HEAD
     path: '/inventory',
     name: 'Inventory',
     component: Inventory
-=======
-    path: '/Login',
-    name: 'Login',
-    component: Login,
->>>>>>> Mutasem-branch
+  },
+  {
+    path: '/productAddEdit',
+    name: 'ProductAddEdit',
+    component: ProductAddEdit
+  },
+  {
+    path: '/employeeAddEdit',
+    name: 'EmployeeAddEdit',
+    component: EmployeeAddEdit
   }
 ]
 

@@ -25,6 +25,7 @@
 
 <script>
   import { reactive, onMounted } from 'vue';
+  import { useRouter } from 'vue-router';
   import { repository } from '@/store/repository.js';
 
   export default {
@@ -34,6 +35,8 @@
       const state = reactive({
         products: []
       });
+
+      const router = useRouter();
 
       const {
         getProductLites,
@@ -46,6 +49,8 @@
 
       async function showDetails(productId) {
         console.log(await getProductDetail(productId));
+
+        router.push('/productAddEdit');
       }
 
       return {

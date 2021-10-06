@@ -1,9 +1,9 @@
 import { ref } from 'vue';
 
 export function repository() {
-<<<<<<< HEAD
   const productLites = ref([]);
   const productDetail = ref({});
+  const employee = ref({});
 
   async function getProductLites() {
     const url = 'https://localhost:44364/inventory/productLite';
@@ -33,30 +33,25 @@ export function repository() {
       return productDetail.value;
   }
 
+  async function login(userName, password) {
+    const url = 'https://localhost:44364/api/Employee/' + userName + '/' + password;
+
+    employee.value = {};
+
+    await fetch(url)
+      .then(response => response.json())
+      .then(function (data) {
+        console.log(data);
+        employee.value = data;
+      })
+
+    return employee.value;
+
+  }
+
   return {
     getProductLites,
-    getProductDetail
+    getProductDetail,
+    login
   }
 }
-=======
-    const employee = ref({});
-
-    async function login(userName, password) {
-        const url = 'https://localhost:5001/api/Employee/' + userName + '/' + password;
-
-        employee.value = {};
-
-        await fetch(url)
-            .then(response => response.json())
-            .then(function (data) {
-                employee.value = data;
-            })
-
-        return employee.value;
-    }
-
-    return {
-        login
-    }
-}
->>>>>>> Mutasem-branch

@@ -1,8 +1,10 @@
 <template>
-  <div class="" id="mainPage">
-    <div>
-      app.vue content
-      <button @click="doRoute('inventory')">Inventory</button>
+  <div>
+    <div id="nav">
+      <div class="w3-bar">
+        <img class="w3-left w3-padding-small" src="./assets/images/logo.svg" width="250">
+        <button class="w3-bar-item w3-button w3-round-large" @click="doRoute('employeeAddEdit')">Add/Edit Employee</button>
+      </div>
     </div>
 
     <router-view/>
@@ -18,13 +20,15 @@ export default {
   setup() {
     const router = useRouter();
 
-    doRoute('home');
+    doRoute('login');
 
     function doRoute(whereTo) {
-      if (whereTo === 'home') {
+      if (whereTo === 'login') {
         router.push('/');
       } else if (whereTo === 'inventory') {
         router.push('/inventory')
+      } else if (whereTo === 'employeeAddEdit') {
+        router.push('/employeeAddEdit')
       }
     }
 
@@ -62,7 +66,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 
 /* General */
