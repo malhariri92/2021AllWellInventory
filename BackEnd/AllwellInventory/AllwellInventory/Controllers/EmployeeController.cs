@@ -1,16 +1,10 @@
 ﻿using AllwellInventory.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using System.Data;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace AllwellInventory.Controllers
 {
@@ -20,22 +14,33 @@ namespace AllwellInventory.Controllers
     {
         private readonly IConfiguration _configuration;
         private string sqlDataSource;
+
         /**
          * Constructor for EmployeesController
          **/
-        public EmployeeController(IConfiguration configuration) {
+        public EmployeeController(IConfiguration configuration)
+        {
             _configuration = configuration;
             sqlDataSource = _configuration.GetConnectionString("Database");
         }
 
-        // GET: api/<EmployeeController>
+        /**
+         * GET: api/<EmployeeController>
+         * To get all employees from the database.
+         * return a list of all employees
+         **/
         [HttpGet]
         public IEnumerable<string> Get()
         {
+            //ToDo Implement getting all employees.
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/<EmployeeController>/5
+        
+        /**
+         * GET api/<EmployeeController>/5
+         * Get employee by Id.
+         **/
         [HttpGet("{id}")]
         public JsonResult Get(int id)
         {
@@ -50,7 +55,7 @@ namespace AllwellInventory.Controllers
                     command.Parameters.AddWithValue("@Id", id);
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        if (reader.Read())
+                        while (reader.Read())
                         {
                             e.Id = reader.GetInt32(0);
                             e.fName = reader.GetString(1).Trim();
@@ -58,26 +63,31 @@ namespace AllwellInventory.Controllers
                             e.Username = reader.GetString(3).Trim();
                             e.Password = reader.GetString(4).Trim();
                             e.IsAdmin = reader.GetBoolean(5);
-                            return new JsonResult(e);
-                        }
 
+                        }
                     }
                 }
 
             }
-            string result = "";
             if (e.Id == 0)
             {
-                result = "false";
+                return new JsonResult(false);
             }
-            return new JsonResult(result);
+
+            return new JsonResult(e);
         }
 
-        // GET api/<EmployeeController>/5
+        
+        /**
+         * GET api/<EmployeeController>/string/string
+         * Get an employee using the username and password.
+         * Return a Jason Object containing employee information if
+         * there is a match, a Json object containing fals otherwise.
+         **/
         [HttpGet("{username}/{password}")]
         public JsonResult Get(string username, string password)
         {
-            
+
             Employee e = new Employee();
             string query = @"Select * from dbo.employee where username = @username and 
                                 password = @password";
@@ -91,7 +101,7 @@ namespace AllwellInventory.Controllers
                     command.Parameters.AddWithValue("@password", password);
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        if (reader.Read())
+                        while (reader.Read())
                         {
                             e.Id = reader.GetInt32(0);
                             e.fName = reader.GetString(1).Trim();
@@ -99,37 +109,17 @@ namespace AllwellInventory.Controllers
                             e.Username = reader.GetString(3).Trim();
                             e.Password = reader.GetString(4).Trim();
                             e.IsAdmin = reader.GetBoolean(5);
-                            return new JsonResult(e);
                         }
-                       
-                    }          
+                    }
                 }
-                Boolean result = true;
-            if (e.Id == 0)
-            {
-                result = false;
+                if (e.Id == 0)
+                {
+                    return new JsonResult(false);
+                }
+
+                return new JsonResult(e);
             }
-            return new JsonResult(result);
-        }
-            }
-            
-
-        // POST api/<EmployeeController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
         }
 
-        // PUT api/<EmployeeController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<EmployeeController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

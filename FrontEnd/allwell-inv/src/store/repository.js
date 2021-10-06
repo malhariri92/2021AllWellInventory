@@ -11,7 +11,6 @@ export function repository() {
         await fetch(url)
             .then(response => response.json())
             .then(function (data) {
-                console.log(data);
                 employee.value = data;
             })
 
