@@ -29,7 +29,7 @@ export default {
         router.push('/inventory')
       } else if (whereTo === 'employeeAddEdit') {
         router.push('/employeeAddEdit')
-      }
+      } 
     }
 
     return {
