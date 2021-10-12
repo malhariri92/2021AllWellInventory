@@ -4,6 +4,7 @@ export function repository() {
   const productLites = ref([]);
   const productDetail = ref({});
   const employee = ref({});
+  const assignLogs = ref([]);
 
   async function getProductLites() {
     const url = 'https://localhost:44364/inventory/productLite';
@@ -41,7 +42,6 @@ export function repository() {
     await fetch(url)
       .then(response => response.json())
       .then(function (data) {
-        console.log(data);
         employee.value = data;
       })
 
@@ -49,9 +49,35 @@ export function repository() {
 
   }
 
+  async function getAssignLogs(productId) {
+    const url = 'https://localhost:44364/api/AssignLogs/' + productId;
+    
+    assignLogs.value = [];
+
+    await fetch(url)
+      .then(response => response.json())
+      .then(function (data) {
+        assignLogs.value = data;
+      })
+      
+      return assignLogs.value;
+  }
+
+  /**Return a product that is assigned to an employee
+   * by updating the returned date field.
+   */
+  async function returnProduct(productId) {
+    const url = 'https://localhost:44364/api/AssignLogs/returnProduct/' + productId;
+    
+    await fetch(url, {method: "POST"})
+      .then(response => response.json())
+  }
+
   return {
     getProductLites,
     getProductDetail,
-    login
+    login,
+    getAssignLogs,
+    returnProduct
   }
 }

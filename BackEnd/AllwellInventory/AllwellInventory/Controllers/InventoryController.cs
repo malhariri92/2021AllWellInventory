@@ -66,7 +66,7 @@ namespace AllwellInventory.Controllers
 
             con.Open();
 
-            SqlCommand cmd = new SqlCommand("SELECT p.name, t.name, p.cost, l.name, p.condition, p.damaged, p.serialNo " +
+            SqlCommand cmd = new SqlCommand("SELECT p.name, t.name, p.cost, l.name, p.condition, p.damaged, p.serialNo, p.id " +
                                             "FROM AllwellInventory.dbo.products as p inner join " +
                                             "AllwellInventory.dbo.type as t on t.id = p.typeId inner join " +
                                             "AllwellInventory.dbo.location as l on l.id = p.locationId " +
@@ -83,6 +83,7 @@ namespace AllwellInventory.Controllers
                 productDetail.Condition = rd.GetString(4);
                 productDetail.Damaged = rd.GetBoolean(5);
                 productDetail.SerialNo = rd.GetString(6);
+                productDetail.ID = rd.GetInt32(7);
             }
             return productDetail;
         }

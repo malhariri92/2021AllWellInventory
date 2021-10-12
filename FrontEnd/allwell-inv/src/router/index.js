@@ -4,6 +4,7 @@ import Inventory from '../components/Inventory.vue';
 import Login from '../components/Login.vue';
 import ProductAddEdit from '../components/ProductAddEdit.vue';
 import EmployeeAddEdit from '../components/EmployeeAddEdit.vue';
+import AssignLogs from '../components/AssignLogs.vue';
 
 const routes = [
   {
@@ -25,6 +26,11 @@ const routes = [
     path: '/employeeAddEdit',
     name: 'EmployeeAddEdit',
     component: EmployeeAddEdit
+  },
+  {
+    path: '/assignLogs',
+    name: 'AssignLogs',
+    component: AssignLogs
   }
 ]
 

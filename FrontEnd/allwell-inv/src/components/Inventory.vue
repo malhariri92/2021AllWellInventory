@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div>
     <h2>Products</h2>
     <table class="w3-table-all">
       <tr style="background-color: var(--blue)">
@@ -20,23 +21,25 @@
         <td class="w3-center cell-v-center" style="width: 20%">{{ product.damaged }}</td>
       </tr>
     </table>
+    </div>
+    <ProductDetails :showModal="state.showDetails" @closeDetailModal="closeDetailModal" :product="state.product"/>
   </div>
 </template>
 
 <script>
   import { reactive, onMounted } from 'vue';
-  import { useRouter } from 'vue-router';
   import { repository } from '@/store/repository.js';
+  import ProductDetails from '@/components/ProductAddEdit.vue';
 
   export default {
     name: 'inventory',
-
+    components: {ProductDetails},
     setup() {
       const state = reactive({
-        products: []
+        products: [],
+        showDetails: false,
+        product: {}
       });
-
-      const router = useRouter();
 
       const {
         getProductLites,
@@ -48,14 +51,21 @@
       });
 
       async function showDetails(productId) {
-        console.log(await getProductDetail(productId));
+        state.product = await getProductDetail(productId);
+       
 
-        router.push('/productAddEdit');
+      state.showDetails = true;
       }
-
+      function closeDetailModal(success) {
+        if (success === false) {
+          state.showDetails = false;
+        }
+        state.showDetails = false;
+      }
       return {
         state,
-        showDetails
+        showDetails,
+        closeDetailModal
       }
     }
   }
