@@ -29,6 +29,9 @@ namespace AllwellInventory.Controllers
                 type.Name = rd.GetString(1);
                 typeList.Add(type);
             }
+
+            con.Close();
+
             return typeList;
         }
 
@@ -56,6 +59,9 @@ namespace AllwellInventory.Controllers
                 productLite.Damaged = rd.GetBoolean(4);
                 productLiteList.Add(productLite);
             }
+
+            con.Close();
+
             return productLiteList;
         }
 
@@ -66,42 +72,51 @@ namespace AllwellInventory.Controllers
 
             con.Open();
 
-            SqlCommand cmd = new SqlCommand("SELECT p.id, p.name, t.name, p.cost, l.name, p.condition, p.damaged, p.serialNo " +
-                                            "FROM AllwellInventory.dbo.products as p inner join " +
-                                            "AllwellInventory.dbo.type as t on t.id = p.typeId inner join " +
-                                            "AllwellInventory.dbo.location as l on l.id = p.locationId " +
+            SqlCommand cmd = new SqlCommand("SELECT p.id, p.name, p.typeId, p.cost, p.locationId, p.condition, p.damaged, p.serialNo " +
+                                            "FROM AllwellInventory.dbo.products as p " +
                                             "WHERE p.id = " + productId, con);
 
             SqlDataReader rd = cmd.ExecuteReader();
 
             while (rd.Read())
             {
-                productDetail.productId = rd.GetInt32(0);
+                productDetail.ProductId = rd.GetInt32(0);
                 productDetail.Name = rd.GetString(1);
-                productDetail.Type = rd.GetString(2);
+                productDetail.TypeId = rd.GetInt32(2);
                 productDetail.Cost = rd.GetDecimal(3);
-                productDetail.Location = rd.GetString(4);
+                productDetail.LocationId = rd.GetInt32(4);
                 productDetail.Condition = rd.GetString(5);
                 productDetail.Damaged = rd.GetBoolean(6);
                 productDetail.SerialNo = rd.GetString(7);
             }
+
+            con.Close();
+
             return productDetail;
         }
-        [AllowAnonymous]
-        [IgnoreAntiforgeryToken]
-        [HttpPut("product/", Name = "PutProductDetail")]
-        public Models.ProductDetail PutProductDetail([FromBody] Models.ProductDetail productDetail)
+
+        [HttpPut("product/{id}/{name}/{typeId}/{cost}/{locationId}/{condition}/{damaged}/{serialNo}", Name = "PutProductDetail")]
+        public Models.ProductDetail PutProductDetail([FromRoute(Name = "id")] int id,
+                                                        [FromRoute(Name = "name")] string name,
+                                                        [FromRoute(Name = "typeId")] int typeId,
+                                                        [FromRoute(Name = "cost")] double cost,
+                                                        [FromRoute(Name = "locationId")] int locationId,
+                                                        [FromRoute(Name = "condition")] string condition,
+                                                        [FromRoute(Name = "damaged")] bool damaged,
+                                                        [FromRoute(Name = "serialNo")] string serialNo)
         {
             con.Open();
 
-            SqlCommand cmd = new SqlCommand("update AllwellInventory.dbo.products set name = " + productDetail.Name + "," +
-                "typeId = " + productDetail.Type + ", cost = " + productDetail.Cost + ", locationId = " + productDetail.Location + ", condition = " +  
-                productDetail.Condition + ", damaged = " + productDetail.Damaged + ", serialNo = " + productDetail.SerialNo +
-                "where id =" + productDetail.productId, con);
+            SqlCommand cmd = new SqlCommand("update AllwellInventory.dbo.products set name = '" + name + "'," +
+                "typeId = " + typeId + ", cost = " + cost + ", locationId = " + locationId + ", condition = '" +
+                condition + "', damaged = " + (damaged ? 1 : 0) + ", serialNo = '" + serialNo +
+                "' where id =" + id, con);
 
             cmd.ExecuteNonQuery();
 
-            return GetProductDetail(productDetail.productId);
+            con.Close();
+
+            return GetProductDetail(id);
         }
     }
 }

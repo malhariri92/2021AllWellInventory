@@ -22,7 +22,7 @@
       </tr>
     </table>
     </div>
-    <ProductDetails :showModal="state.showDetails" @closeDetailModal="closeDetailModal" :product="state.product"/>
+    <ProductDetails :showModal="state.showDetails" @closeDetailModal="closeDetailModal" :productId="state.selectedProductId"/>
   </div>
 </template>
 
@@ -38,12 +38,12 @@
       const state = reactive({
         products: [],
         showDetails: false,
-        product: {}
+        selectedProductId: 0
       });
 
       const {
         getProductLites,
-        getProductDetail
+        
       } = repository();
 
       onMounted(async () => {
@@ -51,17 +51,18 @@
       });
 
       async function showDetails(productId) {
-        state.product = await getProductDetail(productId);
-        console.log (state.product);
+        state.selectedProductId = productId;
 
-      state.showDetails = true;
+       state.showDetails = true;
       }
-      function closeDetailModal(success) {
+      
+      async function closeDetailModal(success) {
         if (success === false) {
           state.showDetails = false;
         }
         state.showDetails = false;
-        getProductLites();
+
+        state.products = await getProductLites();
       }
       return {
         state,

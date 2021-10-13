@@ -49,16 +49,17 @@ export function repository() {
 
   }
 
-  async function putProductDetail(product) {
-    const url = 'https://localhost:44364/inventory/product/';
+  async function putProductDetail(id, name, typeId, cost, locationId, condition, damaged, serialNo) {
+    const url = 'https://localhost:44364/inventory/product/' + id + '/' + name + '/' + typeId + '/' + cost + 
+                                                          '/' + locationId + '/' + condition + 
+                                                          '/' + damaged + '/' + serialNo;
     
     productDetail.value = {};
 
     const options = {
-      method: "PUT",
-      body: product
+      method: "PUT"
     };
-  
+    
     await fetch(url, options)
       .then(response => response.json())
       .then(function (data) {
