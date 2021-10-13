@@ -49,9 +49,31 @@ export function repository() {
 
   }
 
+  async function putProductDetail(product) {
+    const url = 'https://localhost:44364/inventory/product/';
+    
+    productDetail.value = {};
+
+    const options = {
+      method: "PUT",
+      body: product
+    };
+  
+    await fetch(url, options)
+      .then(response => response.json())
+      .then(function (data) {
+        console.log(data);
+        productDetail.value = data;
+      })
+      
+      return productDetail.value;
+  }
+
+
   return {
     getProductLites,
     getProductDetail,
-    login
+    login,
+    putProductDetail
   }
 }

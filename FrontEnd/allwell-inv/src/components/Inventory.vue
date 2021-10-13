@@ -22,7 +22,7 @@
       </tr>
     </table>
     </div>
-    <ProductDetails :showModal="state.showDetails" @closeDetailModal="closeDetailModal"/>
+    <ProductDetails :showModal="state.showDetails" @closeDetailModal="closeDetailModal" :product="state.product"/>
   </div>
 </template>
 
@@ -38,6 +38,7 @@
       const state = reactive({
         products: [],
         showDetails: false,
+        product: {}
       });
 
       const {
@@ -50,7 +51,8 @@
       });
 
       async function showDetails(productId) {
-        console.log(await getProductDetail(productId));
+        state.product = await getProductDetail(productId);
+        console.log (state.product);
 
       state.showDetails = true;
       }
@@ -59,11 +61,12 @@
           state.showDetails = false;
         }
         state.showDetails = false;
+        getProductLites();
       }
       return {
         state,
         showDetails,
-        closeDetailModal,
+        closeDetailModal
       }
     }
   }

@@ -60,13 +60,13 @@ namespace AllwellInventory.Controllers
         }
 
         [HttpGet("product/{productId}", Name = "GetProductDetail")]
-        public Models.ProductDetail GetProductLites([FromRoute(Name = "productId")] int productId)
+        public Models.ProductDetail GetProductDetail([FromRoute(Name = "productId")] int productId)
         {
             Models.ProductDetail productDetail = new Models.ProductDetail();
 
             con.Open();
 
-            SqlCommand cmd = new SqlCommand("SELECT p.name, t.name, p.cost, l.name, p.condition, p.damaged, p.serialNo " +
+            SqlCommand cmd = new SqlCommand("SELECT p.id, p.name, t.name, p.cost, l.name, p.condition, p.damaged, p.serialNo " +
                                             "FROM AllwellInventory.dbo.products as p inner join " +
                                             "AllwellInventory.dbo.type as t on t.id = p.typeId inner join " +
                                             "AllwellInventory.dbo.location as l on l.id = p.locationId " +
@@ -76,15 +76,32 @@ namespace AllwellInventory.Controllers
 
             while (rd.Read())
             {
-                productDetail.Name = rd.GetString(0);
-                productDetail.Type = rd.GetString(1);
-                productDetail.Cost = rd.GetDecimal(2);
-                productDetail.Location = rd.GetString(3);
-                productDetail.Condition = rd.GetString(4);
-                productDetail.Damaged = rd.GetBoolean(5);
-                productDetail.SerialNo = rd.GetString(6);
+                productDetail.productId = rd.GetInt32(0);
+                productDetail.Name = rd.GetString(1);
+                productDetail.Type = rd.GetString(2);
+                productDetail.Cost = rd.GetDecimal(3);
+                productDetail.Location = rd.GetString(4);
+                productDetail.Condition = rd.GetString(5);
+                productDetail.Damaged = rd.GetBoolean(6);
+                productDetail.SerialNo = rd.GetString(7);
             }
             return productDetail;
+        }
+        [AllowAnonymous]
+        [IgnoreAntiforgeryToken]
+        [HttpPut("product/", Name = "PutProductDetail")]
+        public Models.ProductDetail PutProductDetail([FromBody] Models.ProductDetail productDetail)
+        {
+            con.Open();
+
+            SqlCommand cmd = new SqlCommand("update AllwellInventory.dbo.products set name = " + productDetail.Name + "," +
+                "typeId = " + productDetail.Type + ", cost = " + productDetail.Cost + ", locationId = " + productDetail.Location + ", condition = " +  
+                productDetail.Condition + ", damaged = " + productDetail.Damaged + ", serialNo = " + productDetail.SerialNo +
+                "where id =" + productDetail.productId, con);
+
+            cmd.ExecuteNonQuery();
+
+            return GetProductDetail(productDetail.productId);
         }
     }
 }
