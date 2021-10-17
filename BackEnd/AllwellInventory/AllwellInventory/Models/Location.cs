@@ -19,7 +19,7 @@ namespace AllwellInventory.Models
 
         [Key]
         [Column("id")]
-        public int Id { get; set; }
+        public int LocationId { get; set; }
         [Required]
         [Column("name")]
         [StringLength(30)]

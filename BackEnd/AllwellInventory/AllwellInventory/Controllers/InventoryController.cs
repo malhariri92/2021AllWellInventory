@@ -26,6 +26,7 @@ namespace AllwellInventory.Controllers
             while (rd.Read())
             {
                 Models.Type type = new Models.Type();
+                type.TypeId = rd.GetInt32(0);
                 type.Name = rd.GetString(1);
                 typeList.Add(type);
             }
@@ -33,6 +34,33 @@ namespace AllwellInventory.Controllers
             con.Close();
 
             return typeList;
+        }
+
+        [HttpGet("location", Name = "GetLocations")]
+        public List<Models.Location> GetLocations()
+        {
+            List<Models.Location> locationList = new List<Models.Location>();
+
+            con.Open();
+
+            SqlCommand cmd = new SqlCommand("SELECT * " +
+                                            "FROM AllwellInventory.dbo.location", con);
+
+            SqlDataReader rd = cmd.ExecuteReader();
+
+            while (rd.Read())
+            {
+                Models.Location location = new Models.Location();
+                location.LocationId = rd.GetInt32(0);
+                location.Name = rd.GetString(1);
+                location.City = rd.GetString(2);
+                location.County = rd.GetString(3);
+                locationList.Add(location);
+            }
+
+            con.Close();
+
+            return locationList;
         }
 
         [HttpGet("productLite", Name = "GetProductLites")]
@@ -117,6 +145,26 @@ namespace AllwellInventory.Controllers
             con.Close();
 
             return GetProductDetail(id);
+        }
+
+        [HttpPost("product/{name}/{typeId}/{cost}/{locationId}/{condition}/{serialNo}", Name = "AddProduct")]
+        public bool AddProduct([FromRoute(Name = "name")] string name,
+                                                [FromRoute(Name = "typeId")] int typeId,
+                                                [FromRoute(Name = "cost")] double cost,
+                                                [FromRoute(Name = "locationId")] int locationId,
+                                                [FromRoute(Name = "condition")] string condition,
+                                                [FromRoute(Name = "serialNo")] string serialNo)
+        {
+            con.Open();
+
+            SqlCommand cmd = new SqlCommand("insert into AllwellInventory.dbo.products values('" + name +  "', " + typeId + ", " +
+                cost + ", null, " + locationId + ", '" + condition + "', " + 0 + ", '" + serialNo + "')", con);
+
+            cmd.ExecuteNonQuery();
+
+            con.Close();
+
+            return true;
         }
     }
 }

@@ -68,7 +68,7 @@ namespace AllwellInventory.Models
 
             modelBuilder.Entity<Location>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.LocationId).ValueGeneratedNever();
 
                 entity.Property(e => e.City).IsFixedLength(true);
 
@@ -107,7 +107,7 @@ namespace AllwellInventory.Models
 
             modelBuilder.Entity<Type>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.TypeId).ValueGeneratedNever();
 
                 entity.Property(e => e.Name).IsFixedLength(true);
             });
