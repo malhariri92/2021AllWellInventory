@@ -31,6 +31,7 @@ namespace AllwellInventory.Controllers
         public JsonResult GetLogs(int productId)
         {
             List<AssignLog> logsList = new List<AssignLog>();
+            EmployeeController employeeController = new EmployeeController(_configuration);
             string query = "select * from assign_log " +
                             "where productId = @productId " +
                             "order by returnedDate desc";
@@ -51,7 +52,7 @@ namespace AllwellInventory.Controllers
                             log.EmployeeId = reader.GetInt32(1);
                             log.ProductId = reader.GetInt32(2);
                             log.AssignedDate = reader.GetDateTime(3);
-
+                            log.Employee = employeeController.Get(log.EmployeeId);
                             try
                             {
                                 log.ReturnedDate = reader.GetDateTime(4);
@@ -76,7 +77,8 @@ namespace AllwellInventory.Controllers
             return new JsonResult(logsList);
         }
 
-        [HttpPost("returnProduct/{productId}", Name = "returnProduct")]
+        
+        [HttpPut("returnProduct/{productId}", Name = "returnProduct")]
         public JsonResult returnProduct(int productId)
         {
             string query = "UPDATE assign_log "
@@ -96,7 +98,30 @@ namespace AllwellInventory.Controllers
                 }
 
             }
-            return new JsonResult("Success");
+            return GetLogs(productId);
+        }
+
+        [HttpPost("assignProduct/{employeeId}/{productId}", Name = "assignProduct")]
+        public JsonResult assignProduct(int employeeId, int productId)
+        {
+            string query = "insert into assign_log (employeeId, productId, "
+                           + "assignedDate, returnedDate) "
+                           + "values(@employeeId, @productId, @date, null)";
+
+            using (SqlConnection conn = new SqlConnection(sqlDataSource))
+            {
+                using (SqlCommand command = new SqlCommand(query, conn))
+                {
+                    conn.Open();
+                    command.Parameters.AddWithValue("@employeeId", employeeId);
+                    command.Parameters.AddWithValue("@productId", productId);
+                    command.Parameters.AddWithValue("@date", DateTime.Now);
+                    command.ExecuteNonQuery();
+
+                }
+
+            }
+            return GetLogs(productId);
         }
 
     }

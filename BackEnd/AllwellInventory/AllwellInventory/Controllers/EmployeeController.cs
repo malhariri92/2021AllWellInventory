@@ -30,19 +30,45 @@ namespace AllwellInventory.Controllers
          * return a list of all employees
          **/
         [HttpGet]
-        public IEnumerable<string> Get()
+        public JsonResult Get()
         {
-            //ToDo Implement getting all employees.
-            return new string[] { "value1", "value2" };
-        }
+            List<Employee> employees = new List<Employee>();
+            
+            string query = "Select * from dbo.employee order by fName asc";
 
+            using (SqlConnection conn = new SqlConnection(sqlDataSource))
+            {
+                using (SqlCommand command = new SqlCommand(query, conn))
+                {
+                    conn.Open();
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Employee e = new Employee();
+                            e.Id = reader.GetInt32(0);
+                            e.fName = reader.GetString(1).Trim();
+                            e.lName = reader.GetString(2).Trim();
+                            if (!reader.IsDBNull(3))
+                                e.Username = reader.GetString(3).Trim();
+                            if (!reader.IsDBNull(4))
+                                e.Password = reader.GetString(4).Trim();
+                            e.IsAdmin = reader.GetBoolean(5);
+
+                            employees.Add(e);
+                        }
+                    }
+                }
+            }
+            return new JsonResult(employees);
+        }
         
         /**
          * GET api/<EmployeeController>/5
          * Get employee by Id.
          **/
         [HttpGet("{id}")]
-        public JsonResult Get(int id)
+        public Employee Get(int id)
         {
             Employee e = new Employee();
             string query = "Select * from dbo.employee where Id = @Id";
@@ -60,8 +86,10 @@ namespace AllwellInventory.Controllers
                             e.Id = reader.GetInt32(0);
                             e.fName = reader.GetString(1).Trim();
                             e.lName = reader.GetString(2).Trim();
-                            e.Username = reader.GetString(3).Trim();
-                            e.Password = reader.GetString(4).Trim();
+                            if (!reader.IsDBNull(3))
+                                e.Username = reader.GetString(3).Trim();
+                            if (!reader.IsDBNull(4))
+                                e.Password = reader.GetString(4).Trim();
                             e.IsAdmin = reader.GetBoolean(5);
 
                         }
@@ -71,10 +99,10 @@ namespace AllwellInventory.Controllers
             }
             if (e.Id == 0)
             {
-                return new JsonResult(false);
+                return null;
             }
 
-            return new JsonResult(e);
+            return e;
         }
 
         

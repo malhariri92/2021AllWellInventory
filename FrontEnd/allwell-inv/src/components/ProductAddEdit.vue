@@ -35,13 +35,13 @@
       <p>{{ product.condition }}</p>
       <label class="w3-left w3-margin-left">Serial Number</label>
       <input class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom" type="text">
-      <P><input class="w3-check " type="checkbox"> <label>Damaged</label></P>
+      <p><input class="w3-check " type="checkbox"> <label>Damaged</label></p>
       <p>{{ product.damaged }}</p>
       <button class="w3-button w3-blue w3-round-xxlarge" style="width: 45%;"><b>Add/Edit Product</b></button>
       <button class="w3-button w3-blue w3-round-xxlarge" style="width: 45%;" @click="showLogsModal()"><b>Assign Logs</b></button>
     </div>
     </div>
-        <AssignLogs :showLogsModal="state.showLogsModal" @closeLogsModal="closeLogsModal" :product="product"/>
+        <AssignLogs :showLogsModal="state.showLogsModal" v-if="state.showLogsModal" @closeLogsModal="closeLogsModal" :product="product"/>
   </div>
 </template>
 
@@ -54,22 +54,27 @@ export default {
   components: {AssignLogs},
   props: ['showModal', 'product'],
   emits: ['closeDetailModal'],
+
   setup(props, context) {
     const state = reactive({
       showLogsModal: false,
     });
+
     function close() {
       context.emit('closeDetailModal', false);
     }
-      function showLogsModal() {
+
+    function showLogsModal() {
       state.showLogsModal = true;
+    }
+
+    function closeLogsModal(success) {
+      if (success === false) {
+        state.showLogsModal = false;
       }
-      function closeLogsModal(success) {
-        if (success === false) {
-          state.showLogsModal = false;
-        }
-        state.showDetails = false;
-      }
+      state.showDetails = false;
+    }
+
     return {
       state,
       close,

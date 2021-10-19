@@ -5,7 +5,7 @@ export function repository() {
   const productDetail = ref({});
   const employee = ref({});
   const assignLogs = ref([]);
-
+  const employees = ref({});
   async function getProductLites() {
     const url = 'https://localhost:44364/inventory/productLite';
     
@@ -58,6 +58,7 @@ export function repository() {
       .then(response => response.json())
       .then(function (data) {
         assignLogs.value = data;
+        console.log(assignLogs.value);
       })
       
       return assignLogs.value;
@@ -68,16 +69,44 @@ export function repository() {
    */
   async function returnProduct(productId) {
     const url = 'https://localhost:44364/api/AssignLogs/returnProduct/' + productId;
-    
-    await fetch(url, {method: "POST"})
+    await fetch(url, {method: "PUT"})
       .then(response => response.json())
+      .then(function (data) {
+        assignLogs.value = data;
+      })
+      
+      return assignLogs.value;
   }
 
+  async function getEmployees() {
+    const url = 'https://localhost:44364/api/Employee/';
+    await fetch(url)
+      .then(response => response.json())
+      .then(function (data) {
+        employees.value = data;
+      })
+      
+      return employees.value;
+  }
+
+  async function assignProduct(employeeId, productId) {
+    const url = 'https://localhost:44364/api/AssignLogs/assignProduct/' + employeeId + '/' + productId;
+
+    await fetch(url, {method: "POST"})
+    .then(response => response.json())
+    .then(function (data) {
+      assignLogs.value = data;
+    })
+
+    return assignLogs;
+  }
   return {
     getProductLites,
     getProductDetail,
     login,
     getAssignLogs,
-    returnProduct
+    returnProduct,
+    getEmployees,
+    assignProduct
   }
 }
