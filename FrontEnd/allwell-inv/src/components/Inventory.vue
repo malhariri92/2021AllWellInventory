@@ -1,12 +1,22 @@
 <template>
   <div>
-    <h2>Products</h2>
+    <h2>Products</h2>    
     <table class="w3-table-all">
       <tr style="background-color: var(--blue)">
         <th class="w3-center cell-v-center"></th>
-        <th class="w3-center cell-v-center">Name</th>
-        <th class="w3-center cell-v-center">Type</th>
-        <th class="w3-center cell-v-center">Location</th>
+        <th class="w3-center cell-v-center" @click="sortByName">Name
+          <img src="@/assets/images/downIcon.png" style="height: .75em; width: .75em" v-show="state.sort.onName === 1">
+          <img src="@/assets/images/upIcon.png" style="height: .75em; width: .75em" v-show="state.sort.onName === -1">
+        </th>
+        <th class="w3-center cell-v-center" @click="sortByType">Type
+          <img src="@/assets/images/downIcon.png" style="height: .75em; width: .75em" v-show="state.sort.onType === 1">
+          <img src="@/assets/images/upIcon.png" style="height: .75em; width: .75em" v-show="state.sort.onType === -1">
+        </th>
+        <th class="w3-center cell-v-center" @click="sortByLocation">Location
+          <img src="@/assets/images/downIcon.png" style="height: .75em; width: .75em" v-show="state.sort.onLocation === 1">
+          <img src="@/assets/images/upIcon.png" style="height: .75em; width: .75em" v-show="state.sort.onLocation === -1">
+        </th>
+        
         <th class="w3-center cell-v-center">Damaged</th>
       </tr>
 
@@ -33,7 +43,14 @@
 
     setup() {
       const state = reactive({
-        products: []
+        products: [],
+        sort: {
+          onName: 0,
+          onType: 0,
+          onLocation: 0
+        },
+        searchCategory: '',
+        searchString: ''
       });
 
       const router = useRouter();
@@ -53,9 +70,102 @@
         router.push('/productAddEdit');
       }
 
+//#region 'sorting'
+      function resetSortObject() {
+        state.sort.onName = 0;
+        state.sort.onType = 0;
+        state.sort.onLocation = 0;
+      }
+
+      function getSortOrderDescending(property) {
+        return function (a, b) {
+          if (a[property] < b[property]) {
+            return 1;
+          } else if (a[property] > b[property]) {
+            return -1;
+          }
+          return 0;
+        }
+      }
+
+      function getSortOrderAscending(property) {
+        return function (a, b) {
+          if (a[property] > b[property]) {
+            return 1;
+          } else if (a[property] < b[property]) {
+            return -1;
+          }
+          return 0;
+        }
+      }
+
+      function sortByName() {
+        switch (state.sort.onName) {
+          case 0:
+            state.products.sort(getSortOrderAscending('name'));
+            resetSortObject();
+            state.sort.onName = 1;
+            break;
+          case 1:
+            state.products.sort(getSortOrderDescending('name'));
+            resetSortObject();
+            state.sort.onName = -1;
+            break;
+          case -1:
+            state.products.sort(getSortOrderAscending('name'));
+            resetSortObject();
+            state.sort.onName = 1;
+            break;
+        }
+      }
+
+      function sortByType() {
+        switch (state.sort.onType) {
+          case 0:
+            state.products.sort(getSortOrderAscending('type'));
+            resetSortObject();
+            state.sort.onType = 1;
+            break;
+          case 1:
+            state.products.sort(getSortOrderDescending('type'));
+            resetSortObject();
+            state.sort.onType = -1;
+            break;
+          case -1:
+            state.products.sort(getSortOrderAscending('type'));
+            resetSortObject();
+            state.sort.onType = 1;
+            break;
+        }
+      }
+
+      function sortByLocation() {
+        switch (state.sort.onLocation) {
+          case 0:
+            state.products.sort(getSortOrderAscending('location'));
+            resetSortObject();
+            state.sort.onLocation = 1;
+            break;
+          case 1:
+            state.products.sort(getSortOrderDescending('location'));
+            resetSortObject();
+            state.sort.onLocation = -1;
+            break;
+          case -1:
+            state.products.sort(getSortOrderAscending('location'));
+            resetSortObject();
+            state.sort.onLocation = 1;
+            break;
+        }
+      }
+//#endregion
+
       return {
         state,
-        showDetails
+        showDetails,
+        sortByName,
+        sortByType,
+        sortByLocation
       }
     }
   }

@@ -103,7 +103,7 @@ td.cell-h-center {
 }
 
 .align-v-center {
-  align-items: center;
+  vertical-align: middle;
 }
   
 /* Color classes */
