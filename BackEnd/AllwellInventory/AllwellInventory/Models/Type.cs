@@ -18,7 +18,7 @@ namespace AllwellInventory.Models
 
         [Key]
         [Column("id")]
-        public int Id { get; set; }
+        public int TypeId { get; set; }
         [Required]
         [Column("name")]
         [StringLength(20)]

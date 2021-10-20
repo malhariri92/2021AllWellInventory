@@ -2,8 +2,9 @@
   <div>
     <div id="nav">
       <div class="w3-bar">
-        <img class="w3-left w3-padding-small" src="./assets/images/logo.svg" width="250">
-        <button class="w3-bar-item w3-button w3-round-large" @click="doRoute('employeeAddEdit')">Add/Edit Employee</button>
+        <a href="./"><img class="w3-left w3-padding-small" src="./assets/images/logo.svg" width="200"></a>
+        <button class="w3-bar-item w3-button w3-round-large w3-margin-top" @click="doRoute('inventory')">Inventory</button>
+        <button class="w3-bar-item w3-button w3-round-large w3-margin-top" @click="doRoute('employeeAddEdit')">Employee</button>
       </div>
     </div>
 
@@ -29,7 +30,7 @@ export default {
         router.push('/inventory')
       } else if (whereTo === 'employeeAddEdit') {
         router.push('/employeeAddEdit')
-      }
+      } 
     }
 
     return {
