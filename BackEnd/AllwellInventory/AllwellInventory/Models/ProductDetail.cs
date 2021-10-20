@@ -7,11 +7,7 @@ namespace AllwellInventory.Models
 {
     public class ProductDetail
     {
-<<<<<<< HEAD
-        public int ID { get; set; }
-=======
         public int ProductId { get; set; }
->>>>>>> Ian_branch
         public string Name { get; set; }
         public int TypeId { get; set; }
         public decimal? Cost { get; set; }

@@ -100,31 +100,15 @@ namespace AllwellInventory.Controllers
 
             con.Open();
 
-<<<<<<< HEAD
-            SqlCommand cmd = new SqlCommand("SELECT p.name, t.name, p.cost, l.name, p.condition, p.damaged, p.serialNo, p.id " +
-                                            "FROM AllwellInventory.dbo.products as p inner join " +
-                                            "AllwellInventory.dbo.type as t on t.id = p.typeId inner join " +
-                                            "AllwellInventory.dbo.location as l on l.id = p.locationId " +
-=======
+
             SqlCommand cmd = new SqlCommand("SELECT p.id, p.name, p.typeId, p.cost, p.locationId, p.condition, p.damaged, p.serialNo " +
                                             "FROM AllwellInventory.dbo.products as p " +
->>>>>>> Ian_branch
                                             "WHERE p.id = " + productId, con);
 
             SqlDataReader rd = cmd.ExecuteReader();
 
             while (rd.Read())
             {
-<<<<<<< HEAD
-                productDetail.Name = rd.GetString(0);
-                productDetail.Type = rd.GetString(1);
-                productDetail.Cost = rd.GetDecimal(2);
-                productDetail.Location = rd.GetString(3);
-                productDetail.Condition = rd.GetString(4);
-                productDetail.Damaged = rd.GetBoolean(5);
-                productDetail.SerialNo = rd.GetString(6);
-                productDetail.ID = rd.GetInt32(7);
-=======
                 productDetail.ProductId = rd.GetInt32(0);
                 productDetail.Name = rd.GetString(1);
                 productDetail.TypeId = rd.GetInt32(2);
@@ -133,7 +117,6 @@ namespace AllwellInventory.Controllers
                 productDetail.Condition = rd.GetString(5);
                 productDetail.Damaged = rd.GetBoolean(6);
                 productDetail.SerialNo = rd.GetString(7);
->>>>>>> Ian_branch
             }
 
             con.Close();
