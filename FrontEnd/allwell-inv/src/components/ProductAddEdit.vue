@@ -32,7 +32,7 @@
         <input  v-model="state.product.condition" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
         <label class="w3-left w3-margin-left">Serial Number</label>
         <input  v-model="state.product.serialNo" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
-        <p v-if="state.title === 'Edit'"><input  v-model="state.product.damaged" class="w3-check " type="checkbox"> <label>Damaged</label></p>
+        <p><input  v-model="state.product.damaged" class="w3-check " type="checkbox"> <label>Damaged</label></p>
         <button class="w3-button w3-blue w3-round-xxlarge" style="width: 100%;" @click="updateProduct"><b>{{ state.title }}</b></button>
         <button class="w3-button w3-blue w3-round-xxlarge" style="width: 45%;" @click="showLogsModal()"><b>Assign Logs</b></button>
       </div>
@@ -117,7 +117,6 @@ export default {
     }
 
     async function updateProduct() {
-      context.emit('closeDetailModal', true);
       let success = false;
       if (props.productId === 0) {
         success = await postProduct(state.product.name, state.product.typeId,
@@ -130,6 +129,7 @@ export default {
                                               state.product.cost, state.product.locationId, state.product.condition,
                                               state.product.damaged, state.product.serialNo);
       }
+      context.emit('closeDetailModal', true);
       console.log(success);
 
     }

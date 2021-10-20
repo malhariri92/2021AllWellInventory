@@ -165,18 +165,19 @@ namespace AllwellInventory.Controllers
             return GetProductDetail(id);
         }
 
-        [HttpPost("product/{name}/{typeId}/{cost}/{locationId}/{condition}/{serialNo}", Name = "AddProduct")]
+        [HttpPost("product/{name}/{typeId}/{cost}/{locationId}/{condition}/{damaged}/{serialNo}", Name = "AddProduct")]
         public bool AddProduct([FromRoute(Name = "name")] string name,
                                                 [FromRoute(Name = "typeId")] int typeId,
                                                 [FromRoute(Name = "cost")] double cost,
                                                 [FromRoute(Name = "locationId")] int locationId,
                                                 [FromRoute(Name = "condition")] string condition,
+                                                [FromRoute(Name = "damaged")] bool damaged,
                                                 [FromRoute(Name = "serialNo")] string serialNo)
         {
             con.Open();
 
             SqlCommand cmd = new SqlCommand("insert into AllwellInventory.dbo.products values('" + name +  "', " + typeId + ", " +
-                cost + ", null, " + locationId + ", '" + condition + "', " + 0 + ", '" + serialNo + "')", con);
+                cost + ", null, " + locationId + ", '" + condition + "', " + (damaged ? 1 : 0) + ", '" + serialNo + "')", con);
 
             cmd.ExecuteNonQuery();
 
