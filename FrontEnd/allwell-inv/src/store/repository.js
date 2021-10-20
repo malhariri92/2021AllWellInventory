@@ -101,10 +101,10 @@ export function repository() {
       return productDetail.value;
   }
 
-  async function postProduct(name, typeId, cost, locationId, condition, serialNo) {
+  async function postProduct(name, typeId, cost, locationId, condition, damaged, serialNo) {
     const url = 'https://localhost:44364/Inventory/product/' + name + '/' + typeId + '/' + cost + 
                                                           '/' + locationId + '/' + condition + 
-                                                           '/' + serialNo;
+                                                           '/' + damaged +  '/'+ serialNo;
     
     productDetail.value = {};
 
