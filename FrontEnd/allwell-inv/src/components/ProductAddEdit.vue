@@ -2,8 +2,8 @@
   <div class="w3-modal w3-animate-opacity" style="display:block; padding-top:50px;" v-show="showModal === true">
     <div class="w3-modal-content" style="max-width:500px">
       <div class="w3-container w3-col w3-light-grey w3-round-xxlarge w3-padding-16 w3-margin-bottom">
-        <button v-if="state.title === 'Edit'" class="w3-button w3-blue w3-round-xxlarge w3-display-topleft w3-margin w3-hover-text-black">
-          <b> <font-awesome-icon icon="user-plus" class="icons" />  Assign</b>
+        <button v-if="state.title === 'Edit'" @click="showLogsModal()" class="w3-button w3-blue w3-round-xxlarge w3-display-topleft w3-margin w3-hover-text-black">
+          <b> <font-awesome-icon icon="user-plus" class="icons" />Assign</b>
         </button>
         <a @click="close" class="w3-display-topright w3-margin w3-text-grey w3-hover-text-black"><font-awesome-icon icon="window-close" class="icons w3-xlarge" /></a>
         <div class="w3-cell-row">
@@ -34,10 +34,9 @@
         <input  v-model="state.product.serialNo" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
         <p><input  v-model="state.product.damaged" class="w3-check " type="checkbox"> <label>Damaged</label></p>
         <button class="w3-button w3-blue w3-round-xxlarge" style="width: 100%;" @click="updateProduct"><b>{{ state.title }}</b></button>
-        <button class="w3-button w3-blue w3-round-xxlarge" style="width: 45%;" @click="showLogsModal()"><b>Assign Logs</b></button>
       </div>
     </div>
-        <AssignLogs :showLogsModal="state.showLogsModal" v-if="state.showLogsModal" @closeLogsModal="closeLogsModal" :product="product"/>
+        <AssignLogs :showLogsModal="state.showLogsModal" v-if="state.showLogsModal" @closeLogsModal="closeLogsModal" :productId="productId"/>
   </div>
 </template>
 
@@ -119,6 +118,10 @@ export default {
     async function updateProduct() {
       let success = false;
       if (props.productId === 0) {
+        if(typeof(state.product.damaged) === 'undefined')
+        {
+          state.product.damaged = false;
+        }
         success = await postProduct(state.product.name, state.product.typeId,
                                       state.product.cost, state.product.locationId, state.product.condition,
                                       state.product.damaged, state.product.serialNo);
