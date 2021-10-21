@@ -17,7 +17,7 @@
         <label class="w3-left w3-margin-left">Password</label> 
         <input v-model="state.employee.password" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="password">
         <label class="w3-left w3-margin-left">Verify Password</label>
-        <input v-model="state.employee.password" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="password">
+        <input v-model="state.verify" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="password">
         <p><input  v-model="state.employee.isAdmin" class="w3-check " type="checkbox"> <label>Admin</label></p>
         <button class="w3-button w3-blue w3-round-xxlarge" style="width: 100%;" @click="updateEmployee"><b>{{ state.title }}</b></button>
         </div>
@@ -39,6 +39,7 @@ export default {
   setup(props, context) {
     const state = reactive({
       employee: {},
+      verify: '',
       title: '',
     });
 
@@ -80,6 +81,7 @@ export default {
 
     async function updateEmployee() {
       let success = false;
+      if (state.employee.password === state.verify) {
       if (props.employeeId === 0) {
         if(typeof(state.employee.isAdmin) === 'undefined')
         {
@@ -97,6 +99,13 @@ export default {
       context.emit('closeDetailModal', true);
       console.log(success);
 
+    }
+    else {
+      state.verify = '';
+      state.employee.password = '';
+      alert("Passwords do not match");
+      console.log("fail");
+    }
     }
 
     return {
