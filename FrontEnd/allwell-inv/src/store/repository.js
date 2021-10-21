@@ -52,9 +52,9 @@ export function repository() {
       return employeeDetail.value;
   }
 
-  async function putEmployeeDetail(id, fName, lName, username, password, isAdmin, locationId) {
+  async function putEmployeeDetail(id, fName, lName, username, password, isAdmin) {
     const url = 'https://localhost:44364/api/Employee/' + id + '/' + fName + '/' + lName + '/' + username + 
-                                                          '/' + password + '/' + isAdmin + '/'+ locationId;
+                                                          '/' + password + '/' + isAdmin;
     
     employeeDetail.value = {};
 
@@ -73,9 +73,9 @@ export function repository() {
       return employeeDetail.value;
   }
 
-  async function postEmployee(fName, lName, username, password, isAdmin, locationId) {
+  async function postEmployee(fName, lName, username, password, isAdmin) {
     const url = 'https://localhost:44364/api/Employee/' + fName + '/' + lName + '/' + username + 
-                                                          '/' + password + '/'+ isAdmin + '/'+ locationId;
+                                                          '/' + password + '/'+ isAdmin;
     
     employeeDetail.value = {};
 
@@ -111,20 +111,6 @@ export function repository() {
 
   async function getLocations() {
     const url = 'https://localhost:44364/Inventory/location'
-    
-    locations.value = [];
-
-    await fetch(url)
-      .then(response => response.json())
-      .then(function (data) {
-        locations.value = data;
-      })
-      
-      return locations.value;
-  }
-
-  async function getEmployeeLocations() {
-    const url = 'https://localhost:44364/api/Employee/location'
     
     locations.value = [];
 
@@ -261,7 +247,6 @@ export function repository() {
     putProductDetail,
     getTypes,
     getLocations,
-    getEmployeeLocations,
     postProduct
   }
 }

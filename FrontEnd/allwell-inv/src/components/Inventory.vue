@@ -16,7 +16,7 @@
         <th class="w3-center cell-v-center">Damaged</th>
       </tr>
 
-      <tr v-for="(product, id) in state.products" :key="id" v-on:click="showDetails(product.id)" class="w3-hover-grey" style="cursor:pointer">
+      <tr v-for="(product, id) in state.products" :key="id" v-on:click="showDetails(product.id)" class="w3-hover-pale-yellow" style="cursor:pointer">
         <td class="w3-center cell-v-center" style="width: 20%">{{ product.name }}</td>
         <td class="w3-center cell-v-center" style="width: 20%">{{ product.type }}</td>
         <td class="w3-center cell-v-center" style="width: 20%">{{ product.location }}</td>

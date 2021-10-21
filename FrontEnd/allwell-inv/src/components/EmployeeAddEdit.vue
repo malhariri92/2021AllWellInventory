@@ -18,13 +18,6 @@
         <input v-model="state.employee.password" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="password">
         <label class="w3-left w3-margin-left">Verify Password</label>
         <input v-model="state.employee.password" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="password">
-        
-        <label class="w3-left w3-margin-left">Location</label>
-        <select class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" v-model="state.selectedLocation" @change="locationChange">
-          <option v-if="state.title === 'Add'" selected disabled value>Choose a location</option>
-          <option v-for="(location, locationId) in state.locations" :key="locationId" :value="location.locationId">{{ location.name }}</option>
-        </select>
-        
         <p><input  v-model="state.employee.isAdmin" class="w3-check " type="checkbox"> <label>Admin</label></p>
         <button class="w3-button w3-blue w3-round-xxlarge" style="width: 100%;" @click="updateEmployee"><b>{{ state.title }}</b></button>
         </div>
@@ -47,14 +40,11 @@ export default {
     const state = reactive({
       employee: {},
       title: '',
-      locations: [],
-      selectedLocation: 0
     });
 
     const{
       putEmployeeDetail,
       getEmployeeDetail,
-      getEmployeeLocations,
       postEmployee
     }= repository();
 
@@ -70,21 +60,12 @@ export default {
             state.employee = {};
             state.title = 'Add';
            }
-           
-          state.locations = await getEmployeeLocations();
-          state.selectedLocation = state.employee.locationId;
         }
     });
 
     function close() {
       context.emit('closeDetailModal', false);
     }
-
-    function locationChange() {
-      state.employee.locationId = state.selectedLocation;
-
-    }
-
 
     function showLogsModal() {
       state.showLogsModal = true;
@@ -105,13 +86,13 @@ export default {
           state.employee.isAdmin = false;
         }
         success = await postEmployee(state.employee.fName, state.employee.lName,
-                                      state.employee.username, state.employee.password, state.employee.isAdmin, state.employee.LocationId);
+                                      state.employee.username, state.employee.password, state.employee.isAdmin);
                                       
       }
       else {
       state.employee = await putEmployeeDetail(state.employee.id, state.employee.fName, state.employee.lName,
                                               state.employee.username, state.employee.password,
-                                              state.employee.isAdmin, state.employee.LocationId);
+                                              state.employee.isAdmin);
       }
       context.emit('closeDetailModal', true);
       console.log(success);
@@ -123,8 +104,7 @@ export default {
       close,
       showLogsModal,
       closeLogsModal,
-      updateEmployee,
-      locationChange
+      updateEmployee
     }
   }
 }

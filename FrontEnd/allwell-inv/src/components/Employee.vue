@@ -15,7 +15,7 @@
         <th class="w3-center cell-v-center">Admin</th>
       </tr>
 
-      <tr v-for="(employee, id) in state.employees" :key="id" v-on:click="showDetails(employee.id)" class="w3-hover-grey" style="cursor:pointer">
+      <tr v-for="(employee, id) in state.employees" :key="id" v-on:click="showDetails(employee.id)" class="w3-hover-pale-yellow" style="cursor:pointer">
         <td class="w3-center cell-v-center" style="width: 20%">{{ employee.fName }} {{ employee.lName }}</td>
         <td class="w3-center cell-v-center" style="width: 20%">{{ employee.username }}</td>
         <td class="w3-center cell-v-center" style="width: 20%"><font-awesome-icon icon="check" class="icons w3-text-green" v-if="employee.isAdmin === true" /></td>

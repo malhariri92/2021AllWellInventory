@@ -34,8 +34,6 @@ namespace AllwellInventory.Models
         public string Password { get; set; }
         [Column("isAdmin")]
         public bool IsAdmin { get; set; }
-        [Column("LocationId")]
-        public int LocationId { get; set; }
 
         [InverseProperty(nameof(AssignLog.Employee))]
         public virtual ICollection<AssignLog> AssignLogs { get; set; }
