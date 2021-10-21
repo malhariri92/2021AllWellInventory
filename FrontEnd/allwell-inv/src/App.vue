@@ -4,7 +4,7 @@
       <div class="w3-bar">
         <a href="./"><img class="w3-left w3-padding-small" src="./assets/images/logo.svg" width="200"></a>
         <button class="w3-bar-item w3-button w3-round-large w3-margin-top" @click="doRoute('inventory')">Inventory</button>
-        <button class="w3-bar-item w3-button w3-round-large w3-margin-top" @click="doRoute('employeeAddEdit')">Employee</button>
+        <button class="w3-bar-item w3-button w3-round-large w3-margin-top" @click="doRoute('employee')">Employee</button>
       </div>
     </div>
 
@@ -28,8 +28,8 @@ export default {
         router.push('/');
       } else if (whereTo === 'inventory') {
         router.push('/inventory')
-      } else if (whereTo === 'employeeAddEdit') {
-        router.push('/employeeAddEdit')
+      } else if (whereTo === 'employee') {
+        router.push('/employee')
       } 
     }
 

@@ -12,6 +12,8 @@ namespace AllwellInventory.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
+        private SqlConnection con = new SqlConnection("Data Source=localhost;Initial Catalog=AllwellInventory;Integrated Security=True");
+
         private readonly IConfiguration _configuration;
         private string sqlDataSource;
 
@@ -54,6 +56,7 @@ namespace AllwellInventory.Controllers
                             if (!reader.IsDBNull(4))
                                 e.Password = reader.GetString(4).Trim();
                             e.IsAdmin = reader.GetBoolean(5);
+                            e. LocationId = reader.GetInt32(6);
 
                             employees.Add(e);
                         }
@@ -62,7 +65,92 @@ namespace AllwellInventory.Controllers
             }
             return new JsonResult(employees);
         }
-        
+
+        /**
+        * PUT: api/<EmployeeController>
+        * To edit an employee in the database.
+        * return employee detail
+        **/
+        [HttpPut("{id}/{fName}/{lName}/{username}/{password}/{isAdmin}/{LocationId}", Name = "PutEmployeeDetail")]
+        public Models.Employee PutEmployeeDetail([FromRoute(Name = "id")] int id,
+                                                        [FromRoute(Name = "fName")] string fName,
+                                                        [FromRoute(Name = "lName")] string lName,
+                                                        [FromRoute(Name = "username")] string username,
+                                                        [FromRoute(Name = "password")] string password,
+                                                        [FromRoute(Name = "isAdmin")] bool isAdmin,
+                                                        [FromRoute(Name = "LocationId")] int LocationId)
+        {
+            con.Open();
+
+            SqlCommand cmd = new SqlCommand("update AllwellInventory.dbo.employee set fName = '" + fName + "'," +
+                "lName = '" + lName + "', username = '" + username + "', password = '" + password + "', isAdmin = " + 
+                (isAdmin ? 1 : 0) + ", LocationId = " + LocationId + " where id =" + id, con);
+
+            cmd.ExecuteNonQuery();
+
+            con.Close();
+
+            return Get(id);
+        }
+
+        /**
+        * GET: api/<EmployeeController>
+        * To get location.
+        * return location list
+        **/
+
+        [HttpGet("location", Name = "GetEmployeeLocations")]
+        public List<Models.Location> GetEmployeeLocations()
+        {
+            List<Models.Location> locationList = new List<Models.Location>();
+
+            con.Open();
+
+            SqlCommand cmd = new SqlCommand("SELECT * " +
+                                            "FROM AllwellInventory.dbo.location", con);
+
+            SqlDataReader rd = cmd.ExecuteReader();
+
+            while (rd.Read())
+            {
+                Models.Location location = new Models.Location();
+                location.LocationId = rd.GetInt32(0);
+                location.Name = rd.GetString(1);
+                location.City = rd.GetString(2);
+                location.County = rd.GetString(3);
+                locationList.Add(location);
+            }
+
+            con.Close();
+
+            return locationList;
+        }
+
+        /**
+         * POST: api/<EmployeeController>
+         * To add an employee to the database.
+        * return employee detail
+           **/
+        [HttpPost("{fName}/{lName}/{username}/{password}/{isAdmin}/{LocationId}", Name = "AddEmployee")]
+        public bool AddEmployee([FromRoute(Name = "fName")] string fName,
+                                        [FromRoute(Name = "lName")] string lName,
+                                        [FromRoute(Name = "username")] string username,
+                                        [FromRoute(Name = "password")] string password,
+                                        [FromRoute(Name = "isAdmin")] bool isAdmin,
+                                        [FromRoute(Name = "LocationId")] int LocationId)
+        {
+            con.Open();
+
+            SqlCommand cmd = new SqlCommand("insert into AllwellInventory.dbo.employee values('" + fName + "', '" + lName + "', '" +
+                username + "', '" + password + "', " + (isAdmin ? 1 : 0) + ", " + LocationId + ")", con);
+
+            cmd.ExecuteNonQuery();
+
+            con.Close();
+
+            return true;
+        }
+
         /**
          * GET api/<EmployeeController>/5
          * Get employee by Id.

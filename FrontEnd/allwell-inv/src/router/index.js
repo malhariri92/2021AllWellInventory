@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Inventory from '../components/Inventory.vue';
 import Login from '../components/Login.vue';
 import ProductAddEdit from '../components/ProductAddEdit.vue';
+import Employee from '../components/Employee.vue';
 import EmployeeAddEdit from '../components/EmployeeAddEdit.vue';
 import AssignLogs from '../components/AssignLogs.vue';
 
@@ -16,6 +17,11 @@ const routes = [
     path: '/inventory',
     name: 'Inventory',
     component: Inventory
+  },
+  {
+    path: '/employee',
+    name: 'Employee',
+    component: Employee
   },
   {
     path: '/productAddEdit',

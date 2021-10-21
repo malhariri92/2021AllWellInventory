@@ -3,9 +3,10 @@ import { ref } from 'vue';
 export function repository() {
   const productLites = ref([]);
   const productDetail = ref({});
+  const employeeDetail = ref({});
   const employee = ref({});
   const assignLogs = ref([]);
-  const employees = ref({});
+  const employees = ref([]);
   const types = ref([]);
   const locations = ref([]);
 
@@ -37,6 +38,63 @@ export function repository() {
       return productDetail.value;
   }
 
+  async function getEmployeeDetail(employeeId) {
+    const url = 'https://localhost:44364/api/Employee/' + employeeId;
+    
+    employeeDetail.value = {};
+
+    await fetch(url)
+      .then(response => response.json())
+      .then(function (data) {
+        employeeDetail.value = data;
+      })
+      
+      return employeeDetail.value;
+  }
+
+  async function putEmployeeDetail(id, fName, lName, username, password, isAdmin, locationId) {
+    const url = 'https://localhost:44364/api/Employee/' + id + '/' + fName + '/' + lName + '/' + username + 
+                                                          '/' + password + '/' + isAdmin + '/'+ locationId;
+    
+    employeeDetail.value = {};
+
+    const options = {
+      method: "PUT"
+    };
+    
+
+    await fetch(url, options)
+      .then(response => response.json())
+      .then(function (data) {
+        console.log(data);
+        employeeDetail.value = data;
+      })
+      
+      return employeeDetail.value;
+  }
+
+  async function postEmployee(fName, lName, username, password, isAdmin, locationId) {
+    const url = 'https://localhost:44364/api/Employee/' + fName + '/' + lName + '/' + username + 
+                                                          '/' + password + '/'+ isAdmin + '/'+ locationId;
+    
+    employeeDetail.value = {};
+
+    const options = {
+      method: "POST"
+    };
+    
+
+    await fetch(url, options)
+      .then(response => response.json())
+      .then(function (data) {
+        console.log(data);
+        employeeDetail.value = data;
+      })
+      
+      return employeeDetail.value;
+  }
+
+  
   async function getTypes() {
     const url = 'https://localhost:44364/inventory/type/'
     
@@ -53,6 +111,20 @@ export function repository() {
 
   async function getLocations() {
     const url = 'https://localhost:44364/Inventory/location'
+    
+    locations.value = [];
+
+    await fetch(url)
+      .then(response => response.json())
+      .then(function (data) {
+        locations.value = data;
+      })
+      
+      return locations.value;
+  }
+
+  async function getEmployeeLocations() {
+    const url = 'https://localhost:44364/api/Employee/location'
     
     locations.value = [];
 
@@ -178,6 +250,9 @@ export function repository() {
   return {
     getProductLites,
     getProductDetail,
+    getEmployeeDetail,
+    putEmployeeDetail,
+    postEmployee,
     login,
     getAssignLogs,
     returnProduct,
@@ -186,6 +261,7 @@ export function repository() {
     putProductDetail,
     getTypes,
     getLocations,
+    getEmployeeLocations,
     postProduct
   }
 }
