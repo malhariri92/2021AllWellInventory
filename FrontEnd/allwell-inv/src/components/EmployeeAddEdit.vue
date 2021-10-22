@@ -92,6 +92,10 @@ export default {
                                       
       }
       else {
+        if(typeof(state.employee.isAdmin) === 'undefined')
+        {
+            state.employee.isAdmin = false;
+        }
       state.employee = await putEmployeeDetail(state.employee.id, state.employee.fName, state.employee.lName,
                                               state.employee.username, state.employee.password,
                                               state.employee.isAdmin);

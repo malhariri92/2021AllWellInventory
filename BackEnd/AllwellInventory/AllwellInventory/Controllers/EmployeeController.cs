@@ -82,7 +82,7 @@ namespace AllwellInventory.Controllers
 
             SqlCommand cmd = new SqlCommand("update AllwellInventory.dbo.employee set fName = '" + fName + "'," +
                 "lName = '" + lName + "', username = '" + username + "', password = '" + password + "', isAdmin = " + 
-                (isAdmin ? 1 : 0) + ", LocationId = null where id =" + id, con);
+                (isAdmin ? 1 : 0) + " where id =" + id, con);
 
             cmd.ExecuteNonQuery();
 
@@ -112,7 +112,7 @@ namespace AllwellInventory.Controllers
             con.Open();
 
             SqlCommand cmd = new SqlCommand("insert into AllwellInventory.dbo.employee values('" + fName + "', '" + lName + "', '" +
-                username + "', '" + password + "', " + (isAdmin ? 1 : 0) + ", null)", con);
+                username + "', '" + password + "', " + (isAdmin ? 1 : 0) + ")", con);
 
             cmd.ExecuteNonQuery();
 
