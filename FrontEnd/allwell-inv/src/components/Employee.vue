@@ -49,7 +49,6 @@
 
       onMounted(async () => {
         state.employees = await getEmployees();
-        console.log(state.employees);
       });
 
       async function showDetails(employeeId) {

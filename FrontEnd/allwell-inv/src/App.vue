@@ -3,8 +3,10 @@
     <div id="nav">
       <div class="w3-bar">
         <a href="./"><img class="w3-left w3-padding-small" src="./assets/images/logo.svg" width="200"></a>
-        <button class="w3-bar-item w3-button w3-round-large w3-margin-top" @click="doRoute('inventory')">Inventory</button>
-        <button class="w3-bar-item w3-button w3-round-large w3-margin-top" @click="doRoute('employee')">Employee</button>
+        <button class="w3-bar-item w3-button w3-round-large w3-margin-top" @click="doRoute('inventory')"><font-awesome-icon icon="dolly-flatbed" class="icons" /> Inventory</button>
+        <button class="w3-bar-item w3-button w3-round-large w3-margin-top" @click="doRoute('employee')"><font-awesome-icon icon="users" class="icons" /> Employees</button>
+        <button class="w3-bar-item w3-button w3-round-large w3-margin-top" @click="doRoute('location')"><font-awesome-icon icon="map-pin" class="icons" /> Locations</button>
+        <button class="w3-bar-item w3-button w3-round-large w3-margin-top" @click="doRoute('type')"><font-awesome-icon icon="laptop" class="icons" /> Types</button>
       </div>
     </div>
 
@@ -30,6 +32,10 @@ export default {
         router.push('/inventory')
       } else if (whereTo === 'employee') {
         router.push('/employee')
+      } else if (whereTo === 'location') {
+        router.push('/location')
+      } else if (whereTo === 'type') {
+        router.push('/type')
       } 
     }
 

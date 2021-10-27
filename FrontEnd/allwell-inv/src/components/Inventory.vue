@@ -4,7 +4,7 @@
     <div>
     <h2>Products</h2>        
       <button class="w3-button w3-blue w3-round-xxlarge w3-display-topright w3-margin-right w3-hover-text-black" @click="showDetails(0)">
-        <b> <font-awesome-icon icon="plus-circle" class="icons" />  Add New Product</b>
+        <b> <font-awesome-icon icon="plus-circle" class="icons" />  Add Product</b>
       </button>
       </div>
 

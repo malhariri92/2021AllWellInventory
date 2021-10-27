@@ -4,6 +4,8 @@ export function repository() {
   const productLites = ref([]);
   const productDetail = ref({});
   const employeeDetail = ref({});
+  const locationDetail = ref({});
+  const typeDetail = ref({});
   const employee = ref({});
   const assignLogs = ref([]);
   const employees = ref([]);
@@ -66,7 +68,6 @@ export function repository() {
     await fetch(url, options)
       .then(response => response.json())
       .then(function (data) {
-        console.log(data);
         employeeDetail.value = data;
       })
       
@@ -87,16 +88,78 @@ export function repository() {
     await fetch(url, options)
       .then(response => response.json())
       .then(function (data) {
-        console.log(data);
         employeeDetail.value = data;
       })
       
       return employeeDetail.value;
   }
 
-  
+  async function getLocations() {
+    const url = 'https://localhost:44364/Location'
+    
+    locations.value = [];
+
+    await fetch(url)
+      .then(response => response.json())
+      .then(function (data) {
+        locations.value = data;
+      })
+      
+      return locations.value;
+  }
+
+  async function getLocationDetail(locationId) {
+    const url = 'https://localhost:44364/Location/' + locationId;
+    
+    locationDetail.value = {};
+
+    await fetch(url)
+      .then(response => response.json())
+      .then(function (data) {
+        locationDetail.value = data;
+      })
+      
+      return locationDetail.value;
+  }
+
+  async function putLocationDetail(id, name, city, county) {
+    const url = 'https://localhost:44364/Location/' + id + '/' + name + '/' + city + '/' + county;
+    
+    locationDetail.value = {};
+
+    const options = {
+      method: "PUT"
+    };
+
+    await fetch(url, options)
+      .then(response => response.json())
+      .then(function (data) {
+        locationDetail.value = data;
+      })
+      
+      return locationDetail.value;
+  }
+
+  async function postLocation(name, city, county) {
+    const url = 'https://localhost:44364/location/' + name + '/' + city + '/' + county;
+    
+    locationDetail.value = {};
+
+    const options = {
+      method: "POST"
+    };
+    
+    await fetch(url, options)
+      .then(response => response.json())
+      .then(function (data) {
+        locationDetail.value = data;
+      })
+      
+      return locationDetail.value;
+  }
+
   async function getTypes() {
-    const url = 'https://localhost:44364/inventory/type/'
+    const url = 'https://localhost:44364/Type/'
     
     types.value = [];
 
@@ -109,18 +172,54 @@ export function repository() {
       return types.value;
   }
 
-  async function getLocations() {
-    const url = 'https://localhost:44364/Inventory/location'
+  async function getTypeDetail(typeId) {
+    const url = 'https://localhost:44364/Type/' + typeId;
     
-    locations.value = [];
+    typeDetail.value = {};
 
     await fetch(url)
       .then(response => response.json())
       .then(function (data) {
-        locations.value = data;
+        typeDetail.value = data;
       })
       
-      return locations.value;
+      return typeDetail.value;
+  }
+
+  async function putTypeDetail(id, name) {
+    const url = 'https://localhost:44364/Type/' + id + '/' + name;
+    
+    typeDetail.value = {};
+
+    const options = {
+      method: "PUT"
+    };
+
+    await fetch(url, options)
+      .then(response => response.json())
+      .then(function (data) {
+        typeDetail.value = data;
+      })
+      
+      return typeDetail.value;
+  }
+
+  async function postType(name) {
+    const url = 'https://localhost:44364/Type/' + name;
+    
+    typeDetail.value = {};
+
+    const options = {
+      method: "POST"
+    };
+    
+    await fetch(url, options)
+      .then(response => response.json())
+      .then(function (data) {
+        typeDetail.value = data;
+      })
+      
+      return typeDetail.value;
   }
 
   async function login(userName, password) {
@@ -205,7 +304,6 @@ export function repository() {
     await fetch(url, options)
       .then(response => response.json())
       .then(function (data) {
-        console.log(data);
         productDetail.value = data;
       })
       
@@ -227,7 +325,6 @@ export function repository() {
     await fetch(url, options)
       .then(response => response.json())
       .then(function (data) {
-        console.log(data);
         productDetail.value = data;
       })
       
@@ -237,8 +334,14 @@ export function repository() {
     getProductLites,
     getProductDetail,
     getEmployeeDetail,
+    getLocationDetail,
+    getTypeDetail,
     putEmployeeDetail,
+    putLocationDetail,
+    putTypeDetail,
     postEmployee,
+    postLocation,
+    postType,
     login,
     getAssignLogs,
     returnProduct,
