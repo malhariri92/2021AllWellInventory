@@ -44,7 +44,6 @@ export default {
         if (props.showModal === true) {
           if (props.typeId !== 0) {
             state.type = await getTypeDetail(props.typeId);
-            console.log(props.typeId);
             state.title = 'Edit';
           }
           else {

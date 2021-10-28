@@ -16,9 +16,12 @@
         <input  v-model="state.employee.username" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
         <label class="w3-left w3-margin-left">Password</label> 
         <input v-model="state.employee.password" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="password">
-        <label class="w3-left w3-margin-left">Verify Password</label>
-        <input v-model="state.verify" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="password">
-        <p><input  v-model="state.employee.isAdmin" class="w3-check " type="checkbox"> <label>Admin</label></p>
+        <label class="w3-left w3-margin-left"  v-if="state.ogPassword !== state.employee.password">Verify Password</label>
+        <div class="input-container w3-animate-opacity" v-if="state.ogPassword !== state.employee.password">
+          <input v-model="state.verify" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" @keyup="verifyPassword"  type="password">
+          <i class="icon"><font-awesome-icon v-bind:icon="state.passMatch" class="icons w3-xlarge" v-bind:class="state.passMatchColor" /></i>
+        </div>
+        <p><input v-model="state.employee.isAdmin" class="w3-check" type="checkbox"> <label>Admin</label></p>
         <button class="w3-button w3-blue w3-round-xxlarge" style="width: 100%;" @click="updateEmployee"><b>{{ state.title }}</b></button>
         </div>
     </div>
@@ -41,12 +44,15 @@ export default {
       employee: {},
       verify: '',
       title: '',
+      ogPassword: '',
+      passMatch: 'times-circle',
+      passMatchColor: 'w3-animate-opacity w3-text-red'
     });
 
     const{
       putEmployeeDetail,
       getEmployeeDetail,
-      postEmployee
+      postEmployee,
     }= repository();
 
 
@@ -54,8 +60,8 @@ export default {
         if (props.showModal === true) {
           if (props.employeeId !== 0) {
             state.employee = await getEmployeeDetail(props.employeeId);
-            console.log(props.employeeId);
             state.title = 'Edit';
+            state.ogPassword = state.employee.password;
           }
           else {
             state.employee = {};
@@ -64,24 +70,31 @@ export default {
         }
     });
 
-    function close() {
-      context.emit('closeDetailModal', false);
-    }
-
-    function showLogsModal() {
-      state.showLogsModal = true;
-    }
-
-    function closeLogsModal(success) {
-      if (success === false) {
-        state.showLogsModal = false;
+    function verifyPassword() {
+      if (state.employee.password === state.verify){
+        state.passMatchColor = 'w3-text-green';
+        state.passMatch = 'check-circle';
       }
-      state.showDetails = false;
+      else {
+        state.passMatchColor = 'w3-text-red';
+        state.passMatch = 'times-circle';
+      }
+    }
+
+    function close() {
+      state.ogPassword = '';
+      state.passMatch = 'times-circle';
+      state.passMatchColor = 'w3-animate-opacity w3-text-red';
+      state.verify = '';
+      context.emit('closeDetailModal', false);
+      
+                  console.log(state.ogPassword);
+
     }
 
     async function updateEmployee() {
       let success = false;
-      if (state.employee.password === state.verify) {
+      if (state.ogPassword === state.employee.password || state.employee.password === state.verify) {
       if (props.employeeId === 0) {
         if(typeof(state.employee.isAdmin) === 'undefined')
         {
@@ -106,14 +119,13 @@ export default {
       alert("Passwords do not match");
       console.log("fail");
     }
-    }
+  }
 
     return {
       state,
       close,
-      showLogsModal,
-      closeLogsModal,
-      updateEmployee
+      updateEmployee,
+      verifyPassword
     }
   }
 }
@@ -121,4 +133,17 @@ export default {
 </script>
 
 <style scoped>
+* {box-sizing: border-box;}
+
+/* Style the input container */
+.input-container {
+  display: flex;
+  width: 100%;
+}
+
+/* Style the form icons */
+.icon {
+  margin-top: 8px;
+  min-width: 50px;
+}
 </style>

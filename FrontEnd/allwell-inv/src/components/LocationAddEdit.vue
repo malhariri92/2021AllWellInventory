@@ -48,7 +48,6 @@ export default {
         if (props.showModal === true) {
           if (props.locationId !== 0) {
             state.location = await getLocationDetail(props.locationId);
-            console.log(props.locationId);
             state.title = 'Edit';
           }
           else {
@@ -71,7 +70,6 @@ export default {
 
     async function updateLocation() {
       let success = false;
-      if (state.location.password === state.verify) {
       if (props.locationId === 0) {
         success = await postLocation(state.location.name, state.location.city, state.location.county);                           
       }
@@ -81,8 +79,6 @@ export default {
       }
       context.emit('closeDetailModal', true);
       console.log(success);
-
-    }
     }
 
     return {

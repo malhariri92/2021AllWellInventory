@@ -103,19 +103,19 @@ namespace AllwellInventory.Controllers
         * To remove a type from the database.
         * return boolean
         **/
-        [HttpDelete("{TypeId}", Name = "DeleteType")]
-        public bool DeleteType([FromRoute(Name = "TypeId")] int TypeId)
-        {
-            con.Open();
+        //[HttpDelete("{TypeId}", Name = "DeleteType")]
+        //public bool DeleteType([FromRoute(Name = "TypeId")] int TypeId)
+        //{
+        //    con.Open();
 
-            SqlCommand cmd = new SqlCommand("delete from AllwellInventory.dbo.type where id = " + TypeId, con);
+        //    SqlCommand cmd = new SqlCommand("delete from AllwellInventory.dbo.type where id = " + TypeId, con);
 
-            cmd.ExecuteNonQuery();
+        //    cmd.ExecuteNonQuery();
 
-            con.Close();
+        //    con.Close();
 
-            return true;
-        }
+        //    return true;
+        //}
 
         /**
          * GET <TypeController>
