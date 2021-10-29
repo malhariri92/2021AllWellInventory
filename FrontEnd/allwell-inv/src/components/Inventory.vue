@@ -2,14 +2,14 @@
   <div>
       <div class="w3-display-container">
     <div>
-    <h2>Products</h2>        
+    <h2><b>Inventory</b></h2>        
       <button class="w3-button w3-blue w3-round-xxlarge w3-display-topright w3-margin-right w3-hover-text-black" @click="showDetails(0)">
-        <b> <font-awesome-icon icon="plus-circle" class="icons" />  Add Product</b>
+        <b> <font-awesome-icon icon="plus-circle" class="icons" /> Product</b>
       </button>
       </div>
 
     <table class="w3-table-all w3-hoverable">
-      <tr style="background-color: var(--blue)">
+      <tr class="w3-blue">
         <th class="w3-center cell-v-center">Name</th>
         <th class="w3-center cell-v-center">Type</th>
         <th class="w3-center cell-v-center">Location</th>

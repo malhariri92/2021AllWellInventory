@@ -1,12 +1,12 @@
 <template>
   <div>
     <div id="nav">
-      <div class="w3-bar">
-        <a href="./"><img class="w3-left w3-padding-small" src="./assets/images/logo.svg" width="200"></a>
-        <button class="w3-bar-item w3-button w3-round-large w3-margin-top" @click="doRoute('inventory')"><font-awesome-icon icon="dolly-flatbed" class="icons" /> Inventory</button>
-        <button class="w3-bar-item w3-button w3-round-large w3-margin-top" @click="doRoute('employee')"><font-awesome-icon icon="users" class="icons" /> Employees</button>
-        <button class="w3-bar-item w3-button w3-round-large w3-margin-top" @click="doRoute('location')"><font-awesome-icon icon="map-marker-alt" class="icons" /> Locations</button>
-        <button class="w3-bar-item w3-button w3-round-large w3-margin-top" @click="doRoute('type')"><font-awesome-icon icon="laptop" class="icons" /> Types</button>
+      <div class="w3-bar w3-margin-bottom w3-hover-white" style="display:flex;">
+        <a href="./"><img class="w3-left w3-image w3-margin-right" src="./assets/images/logo.svg" style="width:200px;margin:5px"></a>
+        <button class="w3-bar-item w3-text-grey w3-button w3-round-large w3-margin-top" @click="doRoute('inventory')"><font-awesome-icon icon="dolly-flatbed" class="icons w3-large" /><div>Inventory</div></button>
+        <button class="w3-bar-item w3-text-grey w3-button w3-round-large w3-margin-top" @click="doRoute('employee')"><font-awesome-icon icon="users" class="icons w3-large" /> <div>Employees</div></button>
+        <button class="w3-bar-item w3-text-grey w3-button w3-round-large w3-margin-top" @click="doRoute('location')"><font-awesome-icon icon="map-marker-alt" class="icons w3-large" /> <div>Locations</div></button>
+        <button class="w3-bar-item w3-text-grey w3-button w3-round-large w3-margin-top" @click="doRoute('type')"><font-awesome-icon icon="laptop" class="icons w3-large" /> <div>Types</div></button>
       </div>
     </div>
 

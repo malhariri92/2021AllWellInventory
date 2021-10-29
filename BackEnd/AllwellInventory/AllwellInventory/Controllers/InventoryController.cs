@@ -110,13 +110,13 @@ namespace AllwellInventory.Controllers
             while (rd.Read())
             {
                 productDetail.ProductId = rd.GetInt32(0);
-                productDetail.Name = rd.GetString(1);
+                productDetail.Name = rd.GetString(1).Trim();
                 productDetail.TypeId = rd.GetInt32(2);
                 productDetail.Cost = rd.GetDecimal(3);
                 productDetail.LocationId = rd.GetInt32(4);
-                productDetail.Condition = rd.GetString(5);
+                productDetail.Condition = rd.GetString(5).Trim();
                 productDetail.Damaged = rd.GetBoolean(6);
-                productDetail.SerialNo = rd.GetString(7);
+                productDetail.SerialNo = rd.GetString(7).Trim();
             }
 
             con.Close();
