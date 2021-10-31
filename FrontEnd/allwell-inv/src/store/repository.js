@@ -4,7 +4,6 @@ export function repository() {
   const productLites = ref([]);
   const productDetail = ref({});
   const employeeDetail = ref({});
-  const employee = ref({});
   const assignLogs = ref([]);
   const employees = ref([]);
   const types = ref([]);
@@ -123,22 +122,6 @@ export function repository() {
       return locations.value;
   }
 
-  async function login(userName, password) {
-    const url = 'https://localhost:44364/api/Employee/' + userName + '/' + password;
-
-    employee.value = {};
-
-    await fetch(url)
-      .then(response => response.json())
-      .then(function (data) {
-        employee.value = data;
-        console.log(data);
-      })
-
-    return employee.value;
-
-  }
-
   async function getAssignLogs(productId) {
     const url = 'https://localhost:44364/api/AssignLogs/' + productId;
     
@@ -239,7 +222,6 @@ export function repository() {
     getEmployeeDetail,
     putEmployeeDetail,
     postEmployee,
-    login,
     getAssignLogs,
     returnProduct,
     getEmployees,

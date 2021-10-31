@@ -1,14 +1,24 @@
 <template>
   <div class="w3-modal w3-animate-opacity" style="display:block; padding-top:50px;" v-show="showModal === true">
+    <div v-if="store.userState.user !== null">
     <div class="w3-modal-content" style="max-width:500px">
-      <div class="w3-container w3-col w3-light-grey w3-round-xxlarge w3-padding-16 w3-margin-bottom">
-        <button v-if="state.title === 'Edit'" @click="showLogsModal()" class="w3-button w3-blue w3-round-xxlarge w3-display-topleft w3-margin w3-hover-text-black">
+
+      <div 
+      class="w3-container w3-col w3-light-grey w3-round-xxlarge w3-padding-16 w3-margin-bottom">
+      <a @click="close" class="w3-display-topright w3-margin w3-text-grey w3-hover-text-black">
+          <font-awesome-icon icon="window-close" class="icons w3-xlarge" /></a>
+          
+        <div v-if="store.userState.user.isAdmin">
+        <button @click="showLogsModal()" 
+          class="w3-button w3-blue w3-round-xxlarge w3-display-topleft w3-margin w3-hover-text-black">
           <b> <font-awesome-icon icon="user-plus" class="icons" />Assign</b>
         </button>
-        <a @click="close" class="w3-display-topright w3-margin w3-text-grey w3-hover-text-black"><font-awesome-icon icon="window-close" class="icons w3-xlarge" /></a>
+
+        <a @click="close" class="w3-display-topright w3-margin w3-text-grey w3-hover-text-black">
+          <font-awesome-icon icon="window-close" class="icons w3-xlarge" /></a>
         <div class="w3-cell-row">
           <div class="w3-cell">
-            <h2><b>{{ state.title }} Product</b></h2>
+            <h2><b>{{ state.title }} </b></h2>
           </div> 
         </div> 
         <label class="w3-left w3-margin-left">Product Name</label>
@@ -16,13 +26,13 @@
        
         <label class="w3-left w3-margin-left">Type</label>
         <select class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" v-model="state.selectedType" @change="typeChange">
-          <option  v-if="state.title === 'Add'" selected disabled value>Choose a type</option>
+          <option  v-if="state.title === 'Add Product'" selected disabled value>Choose a type</option>
           <option v-for="(type, typeId) in state.types" :key="typeId" :value="type.typeId">{{ type.name }}</option>
         </select>
 
         <label class="w3-left w3-margin-left">Location</label>
         <select class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" v-model="state.selectedLocation" @change="locationChange">
-          <option v-if="state.title === 'Add'" selected disabled value>Choose a location</option>
+          <option v-if="state.title === 'Add Product'" selected disabled value>Choose a location</option>
           <option v-for="(location, locationId) in state.locations" :key="locationId" :value="location.locationId">{{ location.name }}</option>
         </select>
 
@@ -33,8 +43,32 @@
         <label class="w3-left w3-margin-left">Serial Number</label>
         <input  v-model="state.product.serialNo" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
         <p><input  v-model="state.product.damaged" class="w3-check " type="checkbox"> <label>Damaged</label></p>
-        <button class="w3-button w3-blue w3-round-xxlarge" style="width: 100%;" @click="updateProduct"><b>{{ state.title }}</b></button>
+        <button v-if="store.userState.user.isAdmin" class="w3-button w3-blue w3-round-xxlarge" style="width: 100%;" 
+        @click="updateProduct"><b>{{ state.title }}</b></button>
+        </div>
+
+       <div v-if="(!store.userState.user.isAdmin && showModal)">
+        <div class="w3-cell-row">
+          <div class="w3-cell">
+            <h2><b>{{ state.title }} </b></h2>
+          </div> 
+        </div> 
+
+        <ul class="w3-ul w3-border w3-left-align" style="display: flex; flex-direction: column">
+          <li><strong>Name:</strong> {{ state.product.name }}</li>
+          <li v-if="state.types.length > 0" class="w3-left"><strong>Type:</strong> {{ state.types[state.product.typeId - 1].name }}</li>
+          <li v-if="state.locations.length > 0" class="w3-left"><strong>Location:</strong> {{ state.locations[state.product.locationId - 1].name }}</li>
+          <li class="w3-left"><strong>Cost:</strong> ${{ state.product.cost }}</li>
+          <li class="w3-left"><strong>Condition:</strong> {{ state.product.condition }}</li>
+          <li class="w3-left"><strong>Serial Number:</strong> {{ state.product.serialNo }}</li>
+          <li class="w3-left"><strong>Damaged:</strong> {{ state.product.damaged ? 'Yes' : 'No' }}</li>
+        </ul>      
+        </div>
       </div>
+
+      
+      
+    </div>
     </div>
         <AssignLogs :showLogsModal="state.showLogsModal" v-if="state.showLogsModal" @closeLogsModal="closeLogsModal" :productId="productId"/>
   </div>
@@ -42,7 +76,7 @@
 
 <script>
 
-import { reactive, watch } from 'vue';
+import { reactive, watch, inject } from 'vue';
 import { repository } from '@/store/repository.js';
 import AssignLogs from '@/components/AssignLogs.vue';
 
@@ -54,7 +88,7 @@ export default {
 
   emits: ['closeDetailModal'],
 
-  setup(props, context) {
+   setup(props, context) {
     const state = reactive({
       showLogsModal: false,
       product: {},
@@ -62,8 +96,10 @@ export default {
       selectedType: 0,
       locations: [],
       selectedLocation: 0,
-      title: ''
+      title: '',
     });
+
+    const store = inject('store');
 
     const{
       getTypes,
@@ -78,11 +114,16 @@ export default {
         if (props.showModal === true) {
           if (props.productId !== 0) {
             state.product = await getProductDetail(props.productId);
-            state.title = 'Edit';
+            if(store.userState.user.isAdmin){
+              state.title = 'Edit Product';
+            }
+            else{
+              state.title = 'Product Details';
+            }
           }
           else {
             state.product = {};
-            state.title = 'Add';
+            state.title = 'Add Product';
            }
 
           state.types = await getTypes();
@@ -145,6 +186,7 @@ export default {
       updateProduct,
       typeChange,
       locationChange,
+      store
     }
   }
 }

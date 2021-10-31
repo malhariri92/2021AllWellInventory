@@ -29,7 +29,7 @@
           </p>
     </div>
 
-    <div v-show="checkLogs()"
+    <div v-show="checkLogs() && store.userState.user.isAdmin"
        class="w3-center cell-v-center w3-container w3-margin">
       <h2><b>Assign Product</b></h2>
       <select v-model="state.employeeId" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom" required>
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-  import { reactive, onMounted } from 'vue';
+  import { reactive, onMounted, inject } from 'vue';
   import { repository } from '@/store/repository.js';
 
   export default {
@@ -68,6 +68,8 @@
           isEmployeeSelected: true,
       });
 
+      const store = inject('store');
+
       const { 
         getAssignLogs,
         returnProduct,
@@ -76,7 +78,6 @@
         getProductDetail, } = repository();
       
       onMounted(async () => {
-        console.log('ReturnDate is null: '+props.productId);
         state.product = await getProductDetail(props.productId);
         state.assignLogs = await getAssignLogs(props.productId);
         if (typeof(state.assignLogs) !== 'undefined'){
@@ -149,7 +150,8 @@
         close,
         returnItem,
         assign,
-        checkLogs
+        checkLogs,
+        store
       }
     }
   }

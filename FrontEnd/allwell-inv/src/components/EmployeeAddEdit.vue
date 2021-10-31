@@ -27,7 +27,7 @@
 
 
 <script>
-import { reactive, watch } from 'vue';
+import { reactive, watch, inject} from 'vue';
 import { repository } from '@/store/repository.js';
 
 export default {
@@ -49,12 +49,11 @@ export default {
       postEmployee
     }= repository();
 
-
+    const store = inject('store');
     watch(props, async function() {
         if (props.showModal === true) {
           if (props.employeeId !== 0) {
             state.employee = await getEmployeeDetail(props.employeeId);
-            console.log(props.employeeId);
             state.title = 'Edit';
           }
           else {
@@ -117,7 +116,8 @@ export default {
       close,
       showLogsModal,
       closeLogsModal,
-      updateEmployee
+      updateEmployee,
+      store
     }
   }
 }

@@ -1,9 +1,9 @@
 <template>
   <div>
       <div class="w3-display-container">
-    <div>
+    <div v-if="store.userState.user !== null">
     <h2>Products</h2>        
-      <button class="w3-button w3-blue w3-round-xxlarge w3-display-topright w3-margin-right w3-hover-text-black" @click="showDetails(0)">
+      <button v-if="store.userState.user.isAdmin" class="w3-button w3-blue w3-round-xxlarge w3-display-topright w3-margin-right w3-hover-text-black" @click="showDetails(0)">
         <b> <font-awesome-icon icon="plus-circle" class="icons" />  Add New Product</b>
       </button>
       </div>
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-  import { reactive, onMounted } from 'vue';
+  import { reactive, onMounted, inject } from 'vue';
   import { repository } from '@/store/repository.js';
   import ProductDetails from '@/components/ProductAddEdit.vue';
 
@@ -48,6 +48,8 @@
       const {
         getProductLites,
       } = repository();
+
+      const store = inject('store');
 
       onMounted(async () => {
         state.products = await getProductLites();
@@ -71,6 +73,7 @@
         state,
         showDetails,
         closeDetailModal,
+        store
       }
     }
   }
