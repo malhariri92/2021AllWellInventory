@@ -7,5 +7,6 @@
         public string Type { get; set; }
         public string Location { get; set; }
         public bool Damaged { get; set; }
+        public decimal Cost { get; set; }
     }
 }

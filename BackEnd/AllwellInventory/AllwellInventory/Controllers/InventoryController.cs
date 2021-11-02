@@ -62,18 +62,30 @@ namespace AllwellInventory.Controllers
 
             return locationList;
         }
-
-        [HttpGet("productLite", Name = "GetProductLites")]
-        public List<Models.ProductLite> GetProductLites()
+      
+        [HttpGet("productLite/{includeDamaged}", Name = "GetProductLites")]
+        public List<Models.ProductLite> GetProductLites([FromRoute(Name = "includeDamaged")] bool includeDamaged)
         {
             List<Models.ProductLite> productLiteList = new List<Models.ProductLite>();
 
             con.Open();
 
-            SqlCommand cmd = new SqlCommand("SELECT p.id, p.name, t.name, l.name, p.damaged " +
-                                            "FROM AllwellInventory.dbo.products as p inner join " +
-                                            "AllwellInventory.dbo.type as t on t.id = p.typeId inner join " +
-                                            "AllwellInventory.dbo.location as l on l.id = p.locationId", con);
+            SqlCommand cmd = new SqlCommand();
+
+            if (includeDamaged)
+            {
+                cmd = new SqlCommand("SELECT p.id, p.name, t.name, l.name, p.damaged, p.cost " +
+                                                "FROM AllwellInventory.dbo.products as p inner join " +
+                                                "AllwellInventory.dbo.type as t on t.id = p.typeId inner join " +
+                                                "AllwellInventory.dbo.location as l on l.id = p.locationId", con);
+            }
+            else {
+                cmd = new SqlCommand("SELECT p.id, p.name, t.name, l.name, p.damaged, p.cost " +
+                                                "FROM AllwellInventory.dbo.products as p inner join " +
+                                                "AllwellInventory.dbo.type as t on t.id = p.typeId inner join " +
+                                                "AllwellInventory.dbo.location as l on l.id = p.locationId " +
+                                                "WHERE p.damaged = 0", con);
+            }
 
             SqlDataReader rd = cmd.ExecuteReader();
 
@@ -85,6 +97,7 @@ namespace AllwellInventory.Controllers
                 productLite.Type = rd.GetString(2);
                 productLite.Location = rd.GetString(3);
                 productLite.Damaged = rd.GetBoolean(4);
+                productLite.Cost = rd.GetDecimal(5);
                 productLiteList.Add(productLite);
             }
 
@@ -167,6 +180,29 @@ namespace AllwellInventory.Controllers
             con.Close();
 
             return true;
+        [HttpGet("location", Name = "GetLocations")]
+        public List<Models.Location> GetLocations()
+        {
+            List<Models.Location> locations = new List<Models.Location>();
+
+            con.Open();
+
+            SqlCommand cmd = new SqlCommand("SELECT * " +
+                                            "FROM AllwellInventory.dbo.location", con);
+
+            SqlDataReader rd = cmd.ExecuteReader();
+
+            while (rd.Read())
+            {
+                Models.Location location = new Models.Location();
+                location.Id = rd.GetInt32(0);
+                location.Name = rd.GetString(1);
+                location.City = rd.GetString(2);
+                location.County = rd.GetString(3);
+
+                locations.Add(location);
+            }
+            return locations;
         }
     }
 }
