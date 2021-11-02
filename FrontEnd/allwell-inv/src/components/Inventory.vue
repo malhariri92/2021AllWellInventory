@@ -2,7 +2,7 @@
   <div>
     <h2>Products</h2>    
 
-    <div class="w3-row margin-bottom-10">
+    <div class="w3-row margin-bottom-15">
       <div class="w3-quarter">
         <div class="w3-right-align align-v-center">Search by 
           <select class="margin-left-5 align-v-center" v-model="state.searchBy" @change="clearString">
@@ -36,6 +36,7 @@
       <div class="w3-quarter w3-center">
         <input class="w3-check" type="checkbox" name="damaged" v-model="state.includeDamaged" @change="refreshProducts()">
         <label class="" for="damaged">Include Damaged</label>
+        <div class="align-v-center" v-if="state.includeDamaged">{{ new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(state.damageCost) }}</div>
       </div>
 
       <div class="w3-quarter w3-left-align">
@@ -237,18 +238,21 @@
               state.products = await getProductLites(state.includeDamaged);
             }
 
+            totalDamageCost();
             break;
 
             case 'type':
               state.products = await getProductLites(state.includeDamaged);
               state.products = state.products.filter(product => product.type == state.searchType);
 
+              totalDamageCost();
               break;
 
             case 'location':
               state.products = await getProductLites(state.includeDamaged);
               state.products = state.products.filter(product => product.location == state.searchLocation);
 
+              totalDamageCost();
             break;
         }
       }
@@ -258,11 +262,16 @@
         search()
       }
 
-      // function totalDamageCost() {
-        // state.products.forEach(product => {
-          // if (product.)
-        // })
-      // }
+      function totalDamageCost() {
+        state.damageCost = 0;
+
+        state.products.forEach(product => {
+          if (product.damaged) {
+            state.damageCost += product.cost;
+          }
+          console.log(state.damageCost);
+        })
+      }
 
       function clearSearch() {
         state.searchBy = 'name';
