@@ -7,6 +7,14 @@
         <button class="w3-bar-item w3-text-grey w3-button w3-round-large w3-margin-top" @click="doRoute('employee')"><font-awesome-icon icon="users" class="icons w3-large" /> <div>Employees</div></button>
         <button class="w3-bar-item w3-text-grey w3-button w3-round-large w3-margin-top" @click="doRoute('location')"><font-awesome-icon icon="map-marker-alt" class="icons w3-large" /> <div>Locations</div></button>
         <button class="w3-bar-item w3-text-grey w3-button w3-round-large w3-margin-top" @click="doRoute('type')"><font-awesome-icon icon="laptop" class="icons w3-large" /> <div>Types</div></button>
+      <div class="w3-bar">
+        <a href="./"><img class="w3-left w3-padding-small" src="./assets/images/logo.svg" width="200"></a>
+        <button class="w3-bar-item w3-button w3-round-large w3-margin-top" @click="doRoute('inventory')">Inventory</button>
+        <div v-if="store.userState.user !== null">
+        <button v-if="store.userState.user.isAdmin" class="w3-bar-item w3-button w3-round-large w3-margin-top" @click="doRoute('employee')">Employees</button>
+        </div>
+        <a @click="store.methods.logout()" class="w3-display-topright w3-margin w3-hover-text-black"
+        v-if="store.userState.user !== null" ><font-awesome-icon icon="sign-out-alt" class="icons w3-xlarge"/></a>
       </div>
     </div>
 
@@ -16,21 +24,45 @@
 
 <script>
 import { useRouter } from 'vue-router';
+import { provide, watch } from 'vue';
+import store from "@/store";
 
 export default {
   name: 'App',
 
   setup() {
     const router = useRouter();
+    provide('store', store);
 
-    doRoute('login');
+    watch(() => store.userState.user, () => {
+      if(store.userState.user === null)
+      {
+        router.push('/');
+      }
+    })
+
+    router.beforeEach((to, from, next) => {
+      if(to.path !== '/' && store.userState.user === null) {
+        next('/');
+      } else if(to.path === '/' && store.userState.user !== null) {
+        next('/inventory');
+      }
+      else {
+          next();
+      }
+    })
 
     function doRoute(whereTo) {
-      if (whereTo === 'login') {
-        router.push('/');
-      } else if (whereTo === 'inventory') {
+      if (whereTo === 'login')
+      {
+          router.push('/')
+      }
+      else if (whereTo === 'inventory')
+      {
         router.push('/inventory')
-      } else if (whereTo === 'employee') {
+      } 
+      else if (whereTo === 'employee')
+      {
         router.push('/employee')
       } else if (whereTo === 'location') {
         router.push('/location')
@@ -40,7 +72,8 @@ export default {
     }
 
     return {
-      doRoute
+      doRoute,
+      store
     }
   }
 }

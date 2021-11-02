@@ -30,7 +30,7 @@
 
 
 <script>
-import { reactive, watch } from 'vue';
+import { reactive, watch, inject} from 'vue';
 import { repository } from '@/store/repository.js';
 
 export default {
@@ -55,7 +55,7 @@ export default {
       postEmployee,
     }= repository();
 
-
+    const store = inject('store');
     watch(props, async function() {
         if (props.showModal === true) {
           if (props.employeeId !== 0) {
@@ -130,6 +130,10 @@ export default {
       close,
       updateEmployee,
       verifyPassword
+      showLogsModal,
+      closeLogsModal,
+      updateEmployee,
+      store
     }
   }
 }
