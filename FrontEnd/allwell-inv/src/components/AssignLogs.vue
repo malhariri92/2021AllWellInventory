@@ -8,7 +8,7 @@
        <h5><b>Product Name: </b>{{ state.product.name }}</h5>
       <h5><b>Serial Number: </b>{{ state.product.serialNo }}</h5>
       <table class="w3-table-all w3-margin-bottom">
-      <tr style="background-color: var(--blue)">
+      <tr class="w3-blue">
         <th class="w3-center cell-v-center">Employee Name</th>
         <th class="w3-center cell-v-center">Assigned Date</th>
         <th class="w3-center cell-v-center">Returned Date</th>

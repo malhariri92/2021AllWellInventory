@@ -3,7 +3,7 @@
     <div class="w3-modal-content" style="max-width:500px">
       <div class="w3-container w3-col w3-light-grey w3-round-xxlarge w3-padding-16 w3-margin-bottom">
         <button v-if="state.title === 'Edit'" @click="showLogsModal()" class="w3-button w3-blue w3-round-xxlarge w3-display-topleft w3-margin w3-hover-text-black">
-          <b> <font-awesome-icon icon="user-plus" class="icons" />Assign</b>
+          <b> <font-awesome-icon icon="user-plus" class="icons" /> Assign</b>
         </button>
         <a @click="close" class="w3-display-topright w3-margin w3-text-grey w3-hover-text-black"><font-awesome-icon icon="window-close" class="icons w3-xlarge" /></a>
         <div class="w3-cell-row">
@@ -16,13 +16,13 @@
        
         <label class="w3-left w3-margin-left">Type</label>
         <select class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" v-model="state.selectedType" @change="typeChange">
-          <option  v-if="state.title === 'Add'" selected disabled value>Choose a type</option>
+          <option v-if="state.title === 'Add'" selected disabled :value="selectedType">Choose a type</option>
           <option v-for="(type, typeId) in state.types" :key="typeId" :value="type.typeId">{{ type.name }}</option>
         </select>
 
         <label class="w3-left w3-margin-left">Location</label>
         <select class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" v-model="state.selectedLocation" @change="locationChange">
-          <option v-if="state.title === 'Add'" selected disabled value>Choose a location</option>
+          <option v-if="state.title === 'Add'" selected disabled :value="selectedLocation">Choose a location</option>
           <option v-for="(location, locationId) in state.locations" :key="locationId" :value="location.locationId">{{ location.name }}</option>
         </select>
 
@@ -70,7 +70,9 @@ export default {
       getLocations,
       putProductDetail,
       getProductDetail,
-      postProduct
+      postProduct,
+      selectedLocation,
+      selectedType
     }= repository();
 
 
@@ -145,6 +147,8 @@ export default {
       updateProduct,
       typeChange,
       locationChange,
+      selectedLocation,
+      selectedType
     }
   }
 }
