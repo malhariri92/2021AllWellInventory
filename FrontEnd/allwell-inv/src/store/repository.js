@@ -4,9 +4,11 @@ export function repository() {
   const productLites = ref([]);
   const productDetail = ref({});
   const employee = ref({});
+  const types = ref([]);
+  const locations = ref([]);
 
-  async function getProductLites() {
-    const url = 'https://localhost:44364/inventory/productLite';
+  async function getProductLites(includeDamaged) {
+    const url = 'https://localhost:44364/inventory/productLite/' + includeDamaged;
     
     productLites.value = [];
 
@@ -46,12 +48,41 @@ export function repository() {
       })
 
     return employee.value;
-
   }
+
+  async function listAllTypes() {
+    const url = 'https://localhost:44364/inventory/type';
+
+    types.value = [];
+
+    await fetch(url)
+      .then(response => response.json())
+      .then(function (data) {
+        types.value = data;
+      })
+
+    return types.value;
+  }
+
+  async function listAllLocations() {
+    const url = 'https://localhost:44364/inventory/location';
+
+    locations.value = [];
+
+    await fetch(url)
+      .then(response => response.json())
+      .then(function (data) {
+        locations.value = data;
+      })
+
+    return locations.value;
+  }  
 
   return {
     getProductLites,
     getProductDetail,
-    login
+    login,
+    listAllTypes,
+    listAllLocations
   }
 }

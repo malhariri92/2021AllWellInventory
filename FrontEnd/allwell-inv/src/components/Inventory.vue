@@ -1,6 +1,49 @@
 <template>
   <div>
     <h2>Products</h2>    
+
+    <div class="w3-row margin-bottom-10">
+      <div class="w3-quarter">
+        <div class="w3-right-align align-v-center">Search by 
+          <select class="margin-left-5 align-v-center" v-model="state.searchBy" @change="clearString">
+            <option value="name">Name</option>
+            <option value="type">Type</option>
+            <option value="location">Location</option>
+          </select>:
+        </div>
+      </div>
+
+      <div class="w3-quarter align-v-center">
+        <div class="w3-left-align" v-if="state.searchBy === 'name'">
+          <input type="text" v-model="state.searchString" @keyup="search">
+        </div>
+
+        <div class="w3-left-align" v-if="state.searchBy === 'type'">
+          <select class="margin-left-5 align-v-center" v-model="state.searchType" @change="search">
+            <option value="" selected disabled hidden>Choose type</option>
+            <option v-for="(type, id) in state.types" :key="id" :value="type.name">{{ type.name }}</option>
+          </select>
+        </div>
+
+        <div class="w3-left-align" v-if="state.searchBy === 'location'">
+          <select class="margin-left-5 align-v-center" v-model="state.searchLocation" @change="search">
+            <option value="" selected disabled hidden>Choose location</option>
+            <option v-for="(location, id) in state.locations" :key="id" :value="location.name">{{ location.name }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="w3-quarter w3-center">
+        <input class="w3-check" type="checkbox" name="damaged" v-model="state.includeDamaged" @change="refreshProducts()">
+        <label class="" for="damaged">Include Damaged</label>
+      </div>
+
+      <div class="w3-quarter w3-left-align">
+        <button class="w3-button w3-round-large color-red" @click="clearSearch">Clear</button>
+      </div>
+      
+    </div>
+
     <table class="w3-table-all">
       <tr style="background-color: var(--blue)">
         <th class="w3-center cell-v-center"></th>
@@ -44,24 +87,34 @@
     setup() {
       const state = reactive({
         products: [],
+        types: [],
+        locations: [],
         sort: {
           onName: 0,
           onType: 0,
           onLocation: 0
         },
-        searchCategory: '',
-        searchString: ''
+        searchBy: 'name',
+        searchString: '',
+        searchType: 0,
+        searchLocation: 0,
+        includeDamaged: false,
+        damageCost: 0
       });
 
       const router = useRouter();
 
       const {
         getProductLites,
-        getProductDetail
+        getProductDetail,
+        listAllTypes,
+        listAllLocations
       } = repository();
 
       onMounted(async () => {
-        state.products = await getProductLites();
+        await refreshProducts()
+        state.types = await listAllTypes();
+        state.locations = await listAllLocations();
       });
 
       async function showDetails(productId) {
@@ -160,12 +213,76 @@
       }
 //#endregion
 
+      async function clearString() {
+        state.searchString = '';
+        state.products = await getProductLites(state.includeDamaged);
+      }
+
+      async function search() {
+        switch (state.searchBy) {
+          case 'name':
+            if (state.searchString.trim() !== '') {
+              let pattern = new RegExp('^' + state.searchString, 'i');
+
+              let results = [];
+
+              state.products.forEach(product => {
+                if (product.name.match(pattern)) {
+                  results.push(product);
+                }
+              })
+
+              state.products = results;
+            } else {
+              state.products = await getProductLites(state.includeDamaged);
+            }
+
+            break;
+
+            case 'type':
+              state.products = await getProductLites(state.includeDamaged);
+              state.products = state.products.filter(product => product.type == state.searchType);
+
+              break;
+
+            case 'location':
+              state.products = await getProductLites(state.includeDamaged);
+              state.products = state.products.filter(product => product.location == state.searchLocation);
+
+            break;
+        }
+      }
+
+      async function refreshProducts() {
+        state.products = await getProductLites(state.includeDamaged);
+        search()
+      }
+
+      // function totalDamageCost() {
+        // state.products.forEach(product => {
+          // if (product.)
+        // })
+      // }
+
+      function clearSearch() {
+        state.searchBy = 'name';
+        state.searchString = '';
+        state.includeDamaged = false;
+
+        search();
+      }
+
       return {
         state,
         showDetails,
         sortByName,
         sortByType,
-        sortByLocation
+        sortByLocation,
+        clearString,
+        search,
+        refreshProducts,
+        clearSearch,
+        totalDamageCost
       }
     }
   }
