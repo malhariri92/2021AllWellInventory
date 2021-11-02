@@ -112,7 +112,6 @@
 
       const {
         getProductLites,
-        getProductDetail,
         listAllTypes,
         listAllLocations
       } = repository();
@@ -299,7 +298,6 @@
         search,
         refreshProducts,
         clearSearch,
-        totalDamageCost,
         closeDetailModal,
         store,
       }

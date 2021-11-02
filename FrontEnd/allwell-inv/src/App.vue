@@ -17,7 +17,7 @@
         v-if="store.userState.user !== null" ><font-awesome-icon icon="sign-out-alt" class="icons w3-xlarge"/></a>
       </div>
     </div>
-
+    </div>
     <router-view/>
   </div>
 </template>

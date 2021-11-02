@@ -129,10 +129,7 @@ export default {
       state,
       close,
       updateEmployee,
-      verifyPassword
-      showLogsModal,
-      closeLogsModal,
-      updateEmployee,
+      verifyPassword,
       store
     }
   }

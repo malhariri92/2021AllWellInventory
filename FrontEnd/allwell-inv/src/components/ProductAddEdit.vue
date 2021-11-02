@@ -189,7 +189,7 @@ export default {
       typeChange,
       locationChange,
       selectedLocation,
-      selectedType
+      selectedType,
       store
     }
   }

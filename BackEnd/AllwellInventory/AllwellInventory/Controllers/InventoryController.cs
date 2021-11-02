@@ -172,7 +172,7 @@ namespace AllwellInventory.Controllers
         {
             con.Open();
 
-            SqlCommand cmd = new SqlCommand("insert into AllwellInventory.dbo.products values('" + name +  "', " + typeId + ", " +
+            SqlCommand cmd = new SqlCommand("insert into AllwellInventory.dbo.products values('" + name + "', " + typeId + ", " +
                 cost + ", null, " + locationId + ", '" + condition + "', " + (damaged ? 1 : 0) + ", '" + serialNo + "')", con);
 
             cmd.ExecuteNonQuery();
@@ -180,29 +180,7 @@ namespace AllwellInventory.Controllers
             con.Close();
 
             return true;
-        [HttpGet("location", Name = "GetLocations")]
-        public List<Models.Location> GetLocations()
-        {
-            List<Models.Location> locations = new List<Models.Location>();
-
-            con.Open();
-
-            SqlCommand cmd = new SqlCommand("SELECT * " +
-                                            "FROM AllwellInventory.dbo.location", con);
-
-            SqlDataReader rd = cmd.ExecuteReader();
-
-            while (rd.Read())
-            {
-                Models.Location location = new Models.Location();
-                location.Id = rd.GetInt32(0);
-                location.Name = rd.GetString(1);
-                location.City = rd.GetString(2);
-                location.County = rd.GetString(3);
-
-                locations.Add(location);
-            }
-            return locations;
         }
+           
     }
 }
