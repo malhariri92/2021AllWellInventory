@@ -49,12 +49,10 @@
 
       onMounted(async () => {
         state.locations = await getLocations();
-        console.log(state.locations);
       });
 
       async function showDetails(locationId) {
         state.selectedLocationId = locationId;
-        console.log(state.selectedLocationId);
        state.showDetails = true;
 
       }

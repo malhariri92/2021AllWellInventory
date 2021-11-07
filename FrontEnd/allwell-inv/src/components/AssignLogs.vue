@@ -1,6 +1,6 @@
 <template>
   <div class="w3-modal" style="display:block;" v-show="showLogsModal === true">
-    <div class="w3-modal-content w3-light-grey w3-round-xxlarge w3-padding-16" style="width:40%; display: flex;">
+    <div class="w3-modal-content w3-light-grey w3-round-xxlarge w3-padding-16" style="display: flex;">
       <div class="w3-container w3-col ">
           <a @click="close" class="w3-display-topright w3-margin w3-text-grey w3-hover-text-black">
             <font-awesome-icon icon="window-close" class="icons w3-xlarge" /></a>
