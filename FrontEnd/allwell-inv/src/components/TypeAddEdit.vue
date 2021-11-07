@@ -10,7 +10,12 @@
         </div> 
         <label class="w3-left w3-margin-left">Name</label>
         <input v-model="state.type.name" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
+        <div v-if="state.error === true">
+            <p class="w3-text-red">Type name required.</p>
+        </div>
         <button class="w3-button w3-blue w3-round-xxlarge" style="width: 100%;" @click="updateType"><b>{{ state.title }}</b></button>
+
+
         </div>
     </div>
   </div>
@@ -31,6 +36,7 @@ export default {
     const state = reactive({
       type: {},
       title: '',
+      error: false,
     });
 
     const{
@@ -54,6 +60,8 @@ export default {
     });
 
     function close() {
+              state.error = false;
+
       context.emit('closeDetailModal', false);
     }
 
@@ -67,20 +75,28 @@ export default {
     async function updateType() {
       let success = false;
       if (props.typeId === 0) {
-        success = await postType(state.type.name);                           
+        if(typeof(state.type.name) === 'undefined') {
+          state.error = true;
+          console.log("fail");
+        }
+        else {
+          success = await postType(state.type.name);
+          context.emit('closeDetailModal', true);
+          console.log(success);
+        }                  
       }
       else {
-      state.type = await putTypeDetail(state.type.typeId, state.type.name);
+        state.type = await putTypeDetail(state.type.typeId, state.type.name);
+        context.emit('closeDetailModal', true);
+        console.log(success);
       }
-      context.emit('closeDetailModal', true);
-      console.log(success);
     }
 
     return {
       state,
       close,
       closeLogsModal,
-      updateType
+      updateType,
     }
   }
 }

@@ -112,7 +112,7 @@ namespace AllwellInventory.Controllers
             con.Open();
 
             SqlCommand cmd = new SqlCommand("insert into AllwellInventory.dbo.employee values('" + fName + "', '" + lName + "', '" +
-                username + "', '" + password + "', " + (isAdmin ? 1 : 0) + ")", con);
+                username + "', '" + password + "', " + (isAdmin ? 1 : 0) + ", null)", con);
 
             cmd.ExecuteNonQuery();
 

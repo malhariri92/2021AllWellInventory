@@ -22,6 +22,12 @@
           <i class="icon"><font-awesome-icon :icon="state.passMatch" class="icons w3-xlarge" :class="state.passMatchColor" /></i>
         </div>
         <p><input v-model="state.employee.isAdmin" class="w3-check" type="checkbox"> <label>Admin</label></p>
+        <div v-if="state.error === true">
+            <p class="w3-text-red">Employee  first and last name, username, and password required.</p>
+        </div>
+        <div v-if="state.passError === true">
+            <p class="w3-text-red">Passwords do not match.</p>
+        </div>
         <button class="w3-button w3-blue w3-round-xxlarge" style="width: 100%;" @click="updateEmployee"><b>{{ state.title }}</b></button>
         </div>
     </div>
@@ -46,7 +52,9 @@ export default {
       title: '',
       ogPassword: '',
       passMatch: 'times-circle',
-      passMatchColor: 'w3-animate-opacity w3-text-red'
+      passMatchColor: 'w3-animate-opacity w3-text-red',
+      error: false,
+      passError: false
     });
 
     const{
@@ -71,9 +79,10 @@ export default {
     });
 
     function verifyPassword() {
-      if (state.employee.password === state.verify){
+      if (state.employee.password === state.verify && state.employee.password !== ""){
         state.passMatchColor = 'w3-text-green';
         state.passMatch = 'check-circle';
+        state.passError = false;
       }
       else {
         state.passMatchColor = 'w3-text-red';
@@ -86,15 +95,19 @@ export default {
       state.passMatch = 'times-circle';
       state.passMatchColor = 'w3-animate-opacity w3-text-red';
       state.verify = '';
+      state.error = false;
+      state.passError = false;
       context.emit('closeDetailModal', false);
       
-                  console.log(state.ogPassword);
-
     }
 
     async function updateEmployee() {
       let success = false;
-      if (state.ogPassword === state.employee.password || state.employee.password === state.verify) {
+      if (typeof(state.employee.fName, state.employee.lName, state.employee.username) === 'undefined') {
+          state.error = true;
+          console.log("fail");
+      }
+      else if (state.ogPassword === state.employee.password || state.employee.password === state.verify) {
       if (props.employeeId === 0) {
         if(typeof(state.employee.isAdmin) === 'undefined')
         {
@@ -120,7 +133,7 @@ export default {
     else {
       state.verify = '';
       state.employee.password = '';
-      alert("Passwords do not match");
+      state.passError = true;
       console.log("fail");
     }
   }

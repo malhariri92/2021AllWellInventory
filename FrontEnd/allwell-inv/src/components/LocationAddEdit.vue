@@ -14,6 +14,9 @@
         <input v-model="state.location.city" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
         <label class="w3-left w3-margin-left">County</label>
         <input  v-model="state.location.county" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
+        <div v-if="state.error === true">
+            <p class="w3-text-red w3-animate-opacity">Location name, city, and county required.</p>
+        </div>        
         <button class="w3-button w3-blue w3-round-xxlarge" style="width: 100%;" @click="updateLocation"><b>{{ state.title }}</b></button>
         </div>
     </div>
@@ -35,6 +38,7 @@ export default {
     const state = reactive({
       location: {},
       title: '',
+      error: false,
     });
 
     const{
@@ -58,6 +62,7 @@ export default {
     });
 
     function close() {
+      state.error = false;
       context.emit('closeDetailModal', false);
     }
 
@@ -70,15 +75,21 @@ export default {
 
     async function updateLocation() {
       let success = false;
-      if (props.locationId === 0) {
+      if (typeof(state.location.name, state.location.city, state.location.county) === 'undefined') {
+          state.error = true;
+          console.log("fail");
+      }
+      else if (props.locationId === 0) {
         success = await postLocation(state.location.name, state.location.city, state.location.county);                           
+        context.emit('closeDetailModal', true);
+        console.log(success);
       }
-      else {
-      state.location = await putLocationDetail(state.location.locationId, state.location.name, state.location.city,
-                                              state.location.county);
+      else if (props.locationId !== 0) {
+        state.location = await putLocationDetail(state.location.locationId, state.location.name, state.location.city,
+                                                state.location.county);
+        context.emit('closeDetailModal', true);
+        console.log(success);
       }
-      context.emit('closeDetailModal', true);
-      console.log(success);
     }
 
     return {

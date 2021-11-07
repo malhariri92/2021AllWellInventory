@@ -43,6 +43,9 @@
         <label class="w3-left w3-margin-left">Serial Number</label>
         <input  v-model="state.product.serialNo" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
         <p><input  v-model="state.product.damaged" class="w3-check " type="checkbox"> <label>Damaged</label></p>
+        <div v-if="state.error === true">
+            <p class="w3-text-red">Product name, type, locations, cost, condition and SN required.</p>
+        </div>        
         <button v-if="store.userState.user.isAdmin" class="w3-button w3-blue w3-round-xxlarge" style="width: 100%;" 
         @click="updateProduct"><b>{{ state.title }}</b></button>
         </div>
@@ -97,6 +100,7 @@ export default {
       locations: [],
       selectedLocation: 0,
       title: '',
+      error: false
     });
 
     const store = inject('store');
@@ -136,6 +140,7 @@ export default {
     });
 
     function close() {
+      state.error = false;
       context.emit('closeDetailModal', false);
     }
 
@@ -160,7 +165,13 @@ export default {
 
     async function updateProduct() {
       let success = false;
-      if (props.productId === 0) {
+      if(typeof(state.product.name, state.product.typeId,
+                  state.product.cost, state.product.locationId, state.product.condition,
+                  state.product.serialNo) === 'undefined') {
+          state.error = true;
+          console.log("fail");
+      }
+      else if (props.productId === 0) {
         if(typeof(state.product.damaged) === 'undefined')
         {
           state.product.damaged = false;
@@ -168,16 +179,17 @@ export default {
         success = await postProduct(state.product.name, state.product.typeId,
                                       state.product.cost, state.product.locationId, state.product.condition,
                                       state.product.damaged, state.product.serialNo);
+      context.emit('closeDetailModal', true);
+      console.log(success);
                                       
       }
       else {
       state.product = await putProductDetail(state.product.productId, state.product.name, state.product.typeId,
                                               state.product.cost, state.product.locationId, state.product.condition,
                                               state.product.damaged, state.product.serialNo);
-      }
       context.emit('closeDetailModal', true);
       console.log(success);
-
+      }
     }
 
     return {
