@@ -6,17 +6,8 @@
         <button class="w3-bar-item w3-text-grey w3-button w3-round-large w3-margin-top" @click="doRoute('inventory')"><font-awesome-icon icon="dolly-flatbed" class="icons w3-large" /><div>Inventory</div></button>
         <button class="w3-bar-item w3-text-grey w3-button w3-round-large w3-margin-top" @click="doRoute('employee')"><font-awesome-icon icon="users" class="icons w3-large" /> <div>Employees</div></button>
         <button class="w3-bar-item w3-text-grey w3-button w3-round-large w3-margin-top" @click="doRoute('location')"><font-awesome-icon icon="map-marker-alt" class="icons w3-large" /> <div>Locations</div></button>
-        <button class="w3-bar-item w3-text-grey w3-button w3-round-large w3-margin-top" @click="doRoute('type')"><font-awesome-icon icon="laptop" class="icons w3-large" /> <div>Types</div></button>
-      <div class="w3-bar">
-        <a href="./"><img class="w3-left w3-padding-small" src="./assets/images/logo.svg" width="200"></a>
-        <button class="w3-bar-item w3-button w3-round-large w3-margin-top" @click="doRoute('inventory')">Inventory</button>
-        <div v-if="store.userState.user !== null">
-        <button v-if="store.userState.user.isAdmin" class="w3-bar-item w3-button w3-round-large w3-margin-top" @click="doRoute('employee')">Employees</button>
-        </div>
-        <a @click="store.methods.logout()" class="w3-display-topright w3-margin w3-hover-text-black"
-        v-if="store.userState.user !== null" ><font-awesome-icon icon="sign-out-alt" class="icons w3-xlarge"/></a>
+        <button class="w3-bar-item w3-text-grey w3-button w3-round-large w3-margin-top" @click="doRoute('type')"><font-awesome-icon icon="laptop" class="icons w3-large" /> <div>Types</div></button>      
       </div>
-    </div>
     </div>
     <router-view/>
   </div>
@@ -144,6 +135,10 @@ td.cell-h-center {
 
 .align-v-center {
   vertical-align: middle;
+}
+
+.align-v-bottom {
+  vertical-align: bottom;
 }
   
 /* Color classes */
