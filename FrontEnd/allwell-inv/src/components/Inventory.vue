@@ -1,16 +1,16 @@
 <template>
   <div>   
     <div class="w3-display-container">
-    <div v-if="store.userState.user !== null">
-    <h2>Products</h2>        
-      <button v-if="store.userState.user.isAdmin" class="w3-button w3-blue w3-round-xxlarge w3-display-topright w3-margin-right w3-hover-text-black" @click="showDetails(0)">
-        <b> <font-awesome-icon icon="plus-circle" class="icons" />  Add New Product</b>
-      </button>
+      <div v-if="store.userState.user !== null">
+        <h2>Products</h2>        
+          <button v-if="store.userState.user.isAdmin" class="w3-button w3-blue w3-round-xxlarge w3-display-topright w3-margin-right w3-hover-text-black" @click="showDetails(0)">
+            <b><font-awesome-icon icon="plus-circle" class="icons"/> Add New Product</b>
+          </button>
       </div>
     <div class="w3-row margin-bottom-10">
       <div class="w3-quarter">
-        <div class="w3-right-align align-v-center">Search by 
-          <select class="margin-left-5 align-v-center" v-model="state.searchBy" @change="clearString">
+        <div class="w3-right-align">Search by 
+          <select class="w3-round-large margin-left-5 align-v-center" v-model="state.searchBy" @change="clearString">
             <option value="name">Name</option>
             <option value="type">Type</option>
             <option value="location">Location</option>
@@ -18,21 +18,19 @@
         </div>
       </div>
 
-      <div class="w3-quarter align-v-center">
+      <div class="w3-quarter">
         <div class="w3-left-align" v-if="state.searchBy === 'name'">
           <input type="text" v-model="state.searchString" @keyup="search">
         </div>
 
         <div class="w3-left-align" v-if="state.searchBy === 'type'">
-          <select class="margin-left-5 align-v-center" v-model="state.searchType" @change="search">
-            <option value="" selected disabled hidden>Choose type</option>
+          <select class="margin-left-5" v-model="state.searchType" @change="search">
             <option v-for="(type, id) in state.types" :key="id" :value="type.name">{{ type.name }}</option>
           </select>
         </div>
 
         <div class="w3-left-align" v-if="state.searchBy === 'location'">
-          <select class="margin-left-5 align-v-center" v-model="state.searchLocation" @change="search">
-            <option value="" selected disabled hidden>Choose location</option>
+          <select class="margin-left-5" v-model="state.searchLocation" @change="search">
             <option v-for="(location, id) in state.locations" :key="id" :value="location.name">{{ location.name }}</option>
           </select>
         </div>
@@ -41,6 +39,7 @@
       <div class="w3-quarter w3-center">
         <input class="w3-check" type="checkbox" name="damaged" v-model="state.includeDamaged" @change="refreshProducts()">
         <label class="" for="damaged">Include Damaged</label>
+        <div class="align-v-center" v-if="state.includeDamaged">Value: {{ new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(state.damageCost) }}</div>
       </div>
 
       <div class="w3-quarter w3-left-align">
@@ -51,7 +50,6 @@
 
     <table class="w3-table-all">
       <tr style="background-color: var(--blue)">
-        <th class="w3-center cell-v-center"></th>
         <th class="w3-center cell-v-center" @click="sortByName">Name
           <img src="@/assets/images/downIcon.png" style="height: .75em; width: .75em" v-show="state.sort.onName === 1">
           <img src="@/assets/images/upIcon.png" style="height: .75em; width: .75em" v-show="state.sort.onName === -1">
@@ -135,7 +133,8 @@
           state.showDetails = false;
         }
         state.showDetails = false;
-        state.products = await getProductLites();
+        clearString();
+        await refreshProducts();
       }
 
 
@@ -253,19 +252,26 @@
               state.products = await getProductLites(state.includeDamaged);
             }
 
+            totalDamageCost();
             break;
 
             case 'type':
-              state.products = await getProductLites(state.includeDamaged);
-              state.products = state.products.filter(product => product.type == state.searchType);
+              if (state.searchType !== 0) {
+                state.products = await getProductLites(state.includeDamaged);
+                state.products = state.products.filter(product => product.type == state.searchType);
+              }
 
+              totalDamageCost();
               break;
 
             case 'location':
-              state.products = await getProductLites(state.includeDamaged);
-              state.products = state.products.filter(product => product.location == state.searchLocation);
+              if (state.searchLocation !== 0) {
+                state.products = await getProductLites(state.includeDamaged);
+                state.products = state.products.filter(product => product.location == state.searchLocation);
+              }
 
-            break;
+              totalDamageCost();
+              break;
         }
       }
 
@@ -274,15 +280,21 @@
         search()
       }
 
-      // function totalDamageCost() {
-        // state.products.forEach(product => {
-          // if (product.)
-        // })
-      // }
+      function totalDamageCost() {
+        state.damageCost = 0;
+
+        state.products.forEach(product => {
+          if (product.damaged) {
+            state.damageCost += product.cost;
+          }
+        })
+      }
 
       function clearSearch() {
         state.searchBy = 'name';
         state.searchString = '';
+        state.searchType = '';
+        state.searchLocation = '';
         state.includeDamaged = false;
 
         search();

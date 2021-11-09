@@ -1,28 +1,19 @@
 <template>
   <div>
-    <div id="nav" style="display:flex;">
-      <div class="w3-bar w3-margin-bottom w3-hover-white">
-        <a><img class="w3-left w3-image" src="./assets/images/logo.svg" style="width:200px;margin:5px"></a>
-        <div v-if="store.userState.user !== null" class="w3-hide-small w3-animate-opacity">
-          <button class="w3-bar-item w3-text-grey w3-button w3-small w3-round-large w3-margin-top" @click="doRoute('inventory')"><font-awesome-icon icon="dolly-flatbed" class="icons w3-large" /><div>Inventory</div></button>
-          <button v-if="store.userState.user.isAdmin" class="w3-bar-item w3-text-grey w3-button w3-small w3-round-large w3-margin-top" @click="doRoute('employee')"><font-awesome-icon icon="users" class="icons w3-large" /> <div>Employees</div></button>
-          <button v-if="store.userState.user.isAdmin" class="w3-bar-item w3-text-grey w3-button w3-small w3-round-large w3-margin-top" @click="doRoute('location')"><font-awesome-icon icon="map-marker-alt" class="icons w3-large" /> <div>Locations</div></button>
-          <button v-if="store.userState.user.isAdmin" class="w3-bar-item w3-text-grey w3-button w3-small w3-round-large w3-margin-top" @click="doRoute('type')"><font-awesome-icon icon="laptop" class="icons w3-large" /> <div>Types</div></button>
-          <button  class="w3-bar-item w3-text-grey w3-small w3-button w3-round-large w3-margin-top w3-right" @click="store.methods.logout()"><font-awesome-icon icon="sign-out-alt" class="icons w3-large" /> <div>Logout</div></button>
-        </div>
-        <div v-if="store.userState.user !== null" class="w3-hide-medium w3-hide-large w3-animate-opacity">
-          <div class="w3-dropdown-hover w3-hover-light-grey w3-text-grey w3-button w3-round-large w3-margin-top w3-white">
-            <font-awesome-icon icon="bars" class="icons w3-large" /><div> Menu</div>
-            <div class="w3-dropdown-content w3-bar-block w3-round-large w3-card-4"> 
-              <button class="w3-bar-item w3-text-grey w3-button w3-round-large" @click="doRoute('inventory')"><font-awesome-icon icon="dolly-flatbed" class="icons w3-large" />  Inventory</button>
-              <button v-if="store.userState.user.isAdmin" class="w3-bar-item w3-text-grey w3-button w3-round-large" @click="doRoute('employee')"><font-awesome-icon icon="users" class="icons w3-large" /> Employees</button>
-              <button v-if="store.userState.user.isAdmin" class="w3-bar-item w3-text-grey w3-button w3-round-large" @click="doRoute('location')"><font-awesome-icon icon="map-marker-alt" class="icons w3-large" /> Locations</button>
-              <button v-if="store.userState.user.isAdmin" class="w3-bar-item w3-text-grey w3-button w3-round-large" @click="doRoute('type')"><font-awesome-icon icon="laptop" class="icons w3-large" /> Types</button>
-              <button  v-if="store.userState.user !== null" class="w3-bar-item w3-text-grey w3-button w3-round-large" @click="store.methods.logout()"><font-awesome-icon icon="sign-out-alt" class="icons w3-large" /> Logout</button>
-            </div>
-          </div>
-        </div>
+    <div id="nav">
+      <div class="w3-bar w3-margin-bottom w3-hover-white" style="display:flex;">
+        <a href="./"><img class="w3-left w3-image w3-margin-right" src="./assets/images/logo.svg" style="width:200px;margin:5px"></a>
+        <button class="w3-bar-item w3-text-grey w3-button w3-round-large w3-margin-top" @click="doRoute('inventory')"><font-awesome-icon icon="dolly-flatbed" class="icons w3-large" /><div>Inventory</div></button>
 
+        <div v-if="store.userState.user !== null">
+          <div v-if="store.userState.user.isAdmin">
+        <button class="w3-bar-item w3-text-grey w3-button w3-round-large w3-margin-top" @click="doRoute('employee')"><font-awesome-icon icon="users" class="icons w3-large" /> <div>Employees</div></button>
+        <button class="w3-bar-item w3-text-grey w3-button w3-round-large w3-margin-top" @click="doRoute('location')"><font-awesome-icon icon="map-marker-alt" class="icons w3-large" /> <div>Locations</div></button>
+        <button class="w3-bar-item w3-text-grey w3-button w3-round-large w3-margin-top" @click="doRoute('type')"><font-awesome-icon icon="laptop" class="icons w3-large" /> <div>Types</div></button>
+        </div>
+        </div>
+        <a @click="store.methods.logout()" class="w3-display-topright w3-margin w3-hover-text-black" style="cursor:pointer"
+        v-if="store.userState.user !== null" ><font-awesome-icon icon="sign-out-alt" class="icons w3-xlarge"/></a>
       </div>
     </div>
     <router-view/>
@@ -89,7 +80,6 @@ export default {
 <style>
 @import './assets/styles/w3.css';
 
-
 :root {
   --red: #ff3e3e;
   --light-red: #f0bcbc;
@@ -152,6 +142,10 @@ td.cell-h-center {
 
 .align-v-center {
   vertical-align: middle;
+}
+
+.align-v-bottom {
+  vertical-align: bottom;
 }
   
 /* Color classes */
