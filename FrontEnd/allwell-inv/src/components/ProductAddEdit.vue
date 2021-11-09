@@ -23,25 +23,40 @@
         </div> 
         <label class="w3-left w3-margin-left">Product Name</label>
         <input v-model="state.product.name" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
-       
+        <div v-if="!state.isValidName">
+        <p class="font-color-red">Product name is required!</p>
+        </div>
         <label class="w3-left w3-margin-left">Type</label>
         <select class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" v-model="state.selectedType" @change="typeChange">
           <option  v-if="state.title === 'Add Product'" selected disabled value>Choose a type</option>
           <option v-for="(type, typeId) in state.types" :key="typeId" :value="type.typeId">{{ type.name }}</option>
         </select>
-
+        <div v-if="!state.isValidType">
+        <p class="font-color-red">Please select a type!</p>
+        </div>
         <label class="w3-left w3-margin-left">Location</label>
         <select class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" v-model="state.selectedLocation" @change="locationChange">
           <option v-if="state.title === 'Add Product'" selected disabled value>Choose a location</option>
           <option v-for="(location, locationId) in state.locations" :key="locationId" :value="location.locationId">{{ location.name }}</option>
         </select>
-
+        <div v-if="!state.isValidLocation">
+        <p class="font-color-red">Please select a location!</p>
+        </div>
         <label class="w3-left w3-margin-left">Cost</label>
         <input  v-model="state.product.cost" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
+        <div v-if="!state.isValidCost">
+        <p class="font-color-red">Cost is required!</p>
+        </div>
         <label class="w3-left w3-margin-left">Condition</label>
         <input  v-model="state.product.condition" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
+        <div v-if="!state.isValidCondition">
+        <p class="font-color-red">Condition is required!</p>
+        </div>
         <label class="w3-left w3-margin-left">Serial Number</label>
-        <input  v-model="state.product.serialNo" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
+        <input  v-model="state.product.serialNo" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text" required>
+        <div v-if="!state.isValidSerial">
+        <p class="font-color-red">Serial number is required!</p>
+        </div>
         <p><input  v-model="state.product.damaged" class="w3-check " type="checkbox"> <label>Damaged</label></p>
         <button v-if="store.userState.user.isAdmin" class="w3-button w3-blue w3-round-xxlarge" style="width: 100%;" 
         @click="updateProduct"><b>{{ state.title }}</b></button>
@@ -97,6 +112,12 @@ export default {
       locations: [],
       selectedLocation: 0,
       title: '',
+      isValidType: true,
+      isValidLocation: true,
+      isValidName: true,
+      isValidCost: true,
+      isValidCondition: true,
+      isValidSerial: true,
     });
 
     const store = inject('store');
@@ -136,6 +157,7 @@ export default {
     });
 
     function close() {
+      setErrorMessages();
       context.emit('closeDetailModal', false);
     }
 
@@ -160,6 +182,9 @@ export default {
 
     async function updateProduct() {
       let success = false;
+      setErrorMessages();
+      if(!validateData()) return;
+      
       if (props.productId === 0) {
         if(typeof(state.product.damaged) === 'undefined')
         {
@@ -171,6 +196,7 @@ export default {
                                       
       }
       else {
+        
       state.product = await putProductDetail(state.product.productId, state.product.name, state.product.typeId,
                                               state.product.cost, state.product.locationId, state.product.condition,
                                               state.product.damaged, state.product.serialNo);
@@ -178,6 +204,51 @@ export default {
       context.emit('closeDetailModal', true);
       console.log(success);
 
+    }
+
+    function validateData()
+    {
+       if(typeof(state.product.name) === 'undefined' || state.product.name === '')
+        {
+          state.isValidName = false;
+          return false;
+        }
+        if(typeof(state.selectedType) === 'undefined')
+        {
+          state.isValidType = false;
+          return false;
+        }
+        if(typeof(state.selectedLocation) === 'undefined')
+        {
+          state.isValidLocation = false;
+          return false;
+        }
+       if(typeof(state.product.cost) === 'undefined' || state.product.cost === '')
+        {
+          state.isValidCost = false;
+          return false;
+        }
+        if(typeof(state.product.condition) === 'undefined' || state.product.condition === '')
+        {
+          state.isValidCondition= false;
+          return false;
+        }
+        if(typeof(state.product.serialNo) === 'undefined' || state.product.serialNo === '')
+        {
+          state.isValidSerial = false;
+          return false;
+        }
+        return true;
+    }
+
+    function setErrorMessages()
+    {
+      state.isValidType = true;
+      state.isValidLocation = true;
+      state.isValidName = true;
+      state.isValidCost = true;
+      state.isValidSerial = true;
+      state.isValidCondition= true;
     }
 
     return {

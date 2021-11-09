@@ -4,9 +4,16 @@
       <div class="w3-bar w3-margin-bottom w3-hover-white" style="display:flex;">
         <a href="./"><img class="w3-left w3-image w3-margin-right" src="./assets/images/logo.svg" style="width:200px;margin:5px"></a>
         <button class="w3-bar-item w3-text-grey w3-button w3-round-large w3-margin-top" @click="doRoute('inventory')"><font-awesome-icon icon="dolly-flatbed" class="icons w3-large" /><div>Inventory</div></button>
+
+        <div v-if="store.userState.user !== null">
+          <div v-if="store.userState.user.isAdmin">
         <button class="w3-bar-item w3-text-grey w3-button w3-round-large w3-margin-top" @click="doRoute('employee')"><font-awesome-icon icon="users" class="icons w3-large" /> <div>Employees</div></button>
         <button class="w3-bar-item w3-text-grey w3-button w3-round-large w3-margin-top" @click="doRoute('location')"><font-awesome-icon icon="map-marker-alt" class="icons w3-large" /> <div>Locations</div></button>
-        <button class="w3-bar-item w3-text-grey w3-button w3-round-large w3-margin-top" @click="doRoute('type')"><font-awesome-icon icon="laptop" class="icons w3-large" /> <div>Types</div></button>      
+        <button class="w3-bar-item w3-text-grey w3-button w3-round-large w3-margin-top" @click="doRoute('type')"><font-awesome-icon icon="laptop" class="icons w3-large" /> <div>Types</div></button>
+        </div>
+        </div>
+        <a @click="store.methods.logout()" class="w3-display-topright w3-margin w3-hover-text-black" style="cursor:pointer"
+        v-if="store.userState.user !== null" ><font-awesome-icon icon="sign-out-alt" class="icons w3-xlarge"/></a>
       </div>
     </div>
     <router-view/>
