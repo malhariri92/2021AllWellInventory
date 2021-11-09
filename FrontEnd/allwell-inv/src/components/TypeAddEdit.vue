@@ -10,6 +10,9 @@
         </div> 
         <label class="w3-left w3-margin-left">Name</label>
         <input v-model="state.type.name" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
+         <div v-if="!state.isValidName">
+        <p class="font-color-red"> Name is required!</p>
+        </div>
         <button class="w3-button w3-blue w3-round-xxlarge" style="width: 100%;" @click="updateType"><b>{{ state.title }}</b></button>
         </div>
     </div>
@@ -31,6 +34,7 @@ export default {
     const state = reactive({
       type: {},
       title: '',
+      isValidName: true,
     });
 
     const{
@@ -54,6 +58,7 @@ export default {
     });
 
     function close() {
+      setErrorMessages();
       context.emit('closeDetailModal', false);
     }
 
@@ -66,6 +71,8 @@ export default {
 
     async function updateType() {
       let success = false;
+       setErrorMessages();
+      if(!validateData()) return;
       if (props.typeId === 0) {
         success = await postType(state.type.name);                           
       }
@@ -76,6 +83,20 @@ export default {
       console.log(success);
     }
 
+    function validateData()
+    {
+       if(typeof(state.type.name) === 'undefined' || state.type.name === '')
+        {
+          state.isValidName = false;
+          return false;
+        }
+        return true;
+    }
+
+    function setErrorMessages()
+    {
+      state.isValidName = true;
+    }
     return {
       state,
       close,

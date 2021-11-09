@@ -10,10 +10,19 @@
         </div> 
         <label class="w3-left w3-margin-left">Name</label>
         <input v-model="state.location.name" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
+        <div v-if="!state.isValidName">
+        <p class="font-color-red">Location name is required!</p>
+        </div>
         <label class="w3-left w3-margin-left">City</label>
         <input v-model="state.location.city" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
+        <div v-if="!state.isValidCity">
+        <p class="font-color-red">City is required!</p>
+        </div>
         <label class="w3-left w3-margin-left">County</label>
         <input  v-model="state.location.county" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
+        <div v-if="!state.isValidCounty">
+        <p class="font-color-red">County is required!</p>
+        </div>
         <button class="w3-button w3-blue w3-round-xxlarge" style="width: 100%;" @click="updateLocation"><b>{{ state.title }}</b></button>
         </div>
     </div>
@@ -35,6 +44,9 @@ export default {
     const state = reactive({
       location: {},
       title: '',
+      isValidName: true,
+      isValidCity: true,
+      isValidCounty: true,
     });
 
     const{
@@ -58,6 +70,7 @@ export default {
     });
 
     function close() {
+      setErrorMessages();
       context.emit('closeDetailModal', false);
     }
 
@@ -70,6 +83,8 @@ export default {
 
     async function updateLocation() {
       let success = false;
+      setErrorMessages();
+      if(!validateData()) return;
       if (props.locationId === 0) {
         success = await postLocation(state.location.name, state.location.city, state.location.county);                           
       }
@@ -79,6 +94,34 @@ export default {
       }
       context.emit('closeDetailModal', true);
       console.log(success);
+    }
+
+function validateData()
+    {
+       if(typeof(state.location.name) === 'undefined' || state.location.name === '')
+        {
+          state.isValidName = false;
+          return false;
+        }
+        if(typeof(state.location.city) === 'undefined' || state.location.city === '')
+        {
+          state.isValidCity = false;
+          return false;
+        }
+       if(typeof(state.location.county) === 'undefined' || state.location.county === '')
+        {
+          state.isValidCounty = false;
+          return false;
+        }
+        
+        return true;
+    }
+
+    function setErrorMessages()
+    {
+      state.isValidName = true;
+      state.isValidCity = true;
+      state.isValidCounty = true;
     }
 
     return {
