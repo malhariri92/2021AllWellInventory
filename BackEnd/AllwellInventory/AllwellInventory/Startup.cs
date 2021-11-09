@@ -30,9 +30,32 @@ namespace AllwellInventory
         {
             services.AddDbContext<CoreDbContext>(op => op.UseSqlServer(Configuration.GetConnectionString("Database")));
             services.AddControllers();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("VueCorsPolicy", builder =>
+                {
+                    builder
+                      .AllowAnyHeader()
+                      .AllowAnyMethod()
+                      .AllowCredentials()
+                      .WithOrigins("http://localhost:8080");
+                });
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AllwellInventory", Version = "v1" });
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("VueCorsPolicy", builder =>
+                {
+                    builder
+                      .AllowAnyHeader()
+                      .AllowAnyMethod()
+                      .AllowCredentials()
+                      .WithOrigins("http://localhost:8080");
+                });
             });
         }
 
@@ -45,10 +68,12 @@ namespace AllwellInventory
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AllwellInventory v1"));
             }
-
+            app.UseCors("VueCorsPolicy");
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("VueCorsPolicy");
 
             app.UseAuthorization();
 

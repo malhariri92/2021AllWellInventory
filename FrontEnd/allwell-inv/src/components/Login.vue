@@ -36,9 +36,8 @@
 </template>
 
 <script>
-import { reactive } from 'vue';
+import { reactive, inject } from 'vue';
 import { useRouter } from 'vue-router';
-import { repository } from "@/store/repository.js";
 
 export default {
   name: "Login",
@@ -54,8 +53,7 @@ export default {
     });
 
     const router = useRouter();
-
-    const { login } = repository();
+    const store = inject('store');
 
     /**
      * check if the username or password are empty
@@ -80,9 +78,7 @@ export default {
      * do the actual validation for user.
      */
     async function doValidateUser() {
-      state.employee = await login(state.userName, state.password);
-
-
+      state.employee = await store.methods.login(state.userName, state.password);
       
       if (JSON.stringify(state.employee) === "false") {
         state.isValidUser = false;
@@ -95,6 +91,7 @@ export default {
       state,
       validateUser,
       doValidateUser,
+      store
     };
   },
 };
@@ -121,7 +118,7 @@ export default {
   margin: 10px 0;
   border-radius: 55px;
   display: grid;
-  grid-template-columns: 15% 85%;
+  grid-template-columns: 15% 75%;
   padding: 0 0.4rem;
   position: relative;
 }
@@ -130,7 +127,7 @@ export default {
   border: none;
   outline: none;
   overflow: hidden;
-  background: none;
+  background-color: none;
   font-weight: 600;
   font-size: 1.1rem;
 }
