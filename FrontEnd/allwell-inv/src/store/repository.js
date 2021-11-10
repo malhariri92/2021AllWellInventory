@@ -53,9 +53,9 @@ export function repository() {
       return employeeDetail.value;
   }
 
-  async function putEmployeeDetail(id, fName, lName, username, password, isAdmin) {
+  async function putEmployeeDetail(id, fName, lName, username, password, isAdmin, inactive) {
     const url = 'https://localhost:44364/api/Employee/' + id + '/' + fName + '/' + lName + '/' + username + 
-                                                          '/' + password + '/' + isAdmin;
+                                                          '/' + password + '/' + isAdmin + '/' + inactive + '/';
     
     employeeDetail.value = {};
 
@@ -73,9 +73,9 @@ export function repository() {
       return employeeDetail.value;
   }
 
-  async function postEmployee(fName, lName, username, password, isAdmin) {
+  async function postEmployee(fName, lName, username, password, isAdmin, inactive) {
     const url = 'https://localhost:44364/api/Employee/' + fName + '/' + lName + '/' + username + 
-                                                          '/' + password + '/'+ isAdmin;
+                                                          '/' + password + '/'+ isAdmin + '/' + inactive;
     
     employeeDetail.value = {};
 

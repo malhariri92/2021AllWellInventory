@@ -34,7 +34,8 @@
           <i class="icon"><font-awesome-icon :icon="state.passMatch" class="icons w3-xlarge" :class="state.passMatchColor" /></i>
         </div>
         
-        <p><input v-model="state.employee.isAdmin" class="w3-check" type="checkbox"> <label>Admin</label></p>
+        <div class="checkboxes"><div style="padding-right:50px"><input v-model="state.employee.isAdmin" class="w3-check" type="checkbox" > <label>Admin</label></div>
+        <div><input v-model="state.employee.inactive" class="w3-check" type="checkbox"> <label>Inactive</label></div></div>
         <button class="w3-button w3-blue w3-round-xxlarge" style="width: 100%;" @click="updateEmployee"><b>{{ state.title }}</b></button>
         </div>
     </div>
@@ -118,12 +119,18 @@ export default {
       validateData();
       if (state.ogPassword === state.employee.password || state.employee.password === state.verify) {
       if (props.employeeId === 0) {
+        
+        // Fixes issues of empty checkbox sending undefined instead of false
         if(typeof(state.employee.isAdmin) === 'undefined')
         {
           state.employee.isAdmin = false;
         }
+        if(typeof(state.employee.inactive) === 'undefined')
+        {
+          state.employee.inactive = false;
+        }
         success = await postEmployee(state.employee.fName, state.employee.lName,
-                                      state.employee.username, state.employee.password, state.employee.isAdmin);
+                                      state.employee.username, state.employee.password, state.employee.isAdmin, state.employee.inactive);
                                       
       }
       else {
@@ -131,9 +138,13 @@ export default {
         {
             state.employee.isAdmin = false;
         }
+        if(typeof(state.employee.inactive) === 'undefined')
+        {
+          state.employee.inactive = false;
+        }
       state.employee = await putEmployeeDetail(state.employee.id, state.employee.fName, state.employee.lName,
                                               state.employee.username, state.employee.password,
-                                              state.employee.isAdmin);
+                                              state.employee.isAdmin, state.employee.inactive);
       }
       context.emit('closeDetailModal', true);
       console.log(success);
@@ -193,6 +204,11 @@ export default {
 .input-container {
   display: flex;
   width: 100%;
+}
+
+.checkboxes {
+  display: inline-flex;
+  padding: 20px;
 }
 
 /* Style the form icons */

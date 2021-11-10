@@ -62,7 +62,7 @@ namespace AllwellInventory.Controllers
 
             return locationList;
         }
-      
+
         [HttpGet("productLite/{includeDamaged}", Name = "GetProductLites")]
         public List<Models.ProductLite> GetProductLites([FromRoute(Name = "includeDamaged")] bool includeDamaged)
         {
@@ -79,7 +79,8 @@ namespace AllwellInventory.Controllers
                                                 "AllwellInventory.dbo.type as t on t.id = p.typeId inner join " +
                                                 "AllwellInventory.dbo.location as l on l.id = p.locationId", con);
             }
-            else {
+            else
+            {
                 cmd = new SqlCommand("SELECT p.id, p.name, t.name, l.name, p.damaged, p.cost " +
                                                 "FROM AllwellInventory.dbo.products as p inner join " +
                                                 "AllwellInventory.dbo.type as t on t.id = p.typeId inner join " +
@@ -173,7 +174,7 @@ namespace AllwellInventory.Controllers
             con.Open();
 
             SqlCommand cmd = new SqlCommand("insert into AllwellInventory.dbo.products values('" + name + "', " + typeId + ", " +
-                cost + ", null, " + locationId + ", '" + condition + "', " + (damaged ? 1 : 0) + ", '" + serialNo + "')", con);
+                cost + ", " + locationId + ", '" + condition + "', " + (damaged ? 1 : 0) + ", '" + serialNo + "')", con);
 
             cmd.ExecuteNonQuery();
 
@@ -181,6 +182,6 @@ namespace AllwellInventory.Controllers
 
             return true;
         }
-           
+
     }
 }

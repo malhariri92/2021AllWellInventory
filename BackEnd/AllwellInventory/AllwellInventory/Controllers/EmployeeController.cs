@@ -35,8 +35,8 @@ namespace AllwellInventory.Controllers
         public JsonResult Get()
         {
             List<Employee> employees = new List<Employee>();
-            
-            string query = "Select * from dbo.employee order by fName asc";
+
+            string query = "Select * from dbo.employee Where inactive = 0 order by fName asc";
 
             using (SqlConnection conn = new SqlConnection(sqlDataSource))
             {
@@ -70,19 +70,20 @@ namespace AllwellInventory.Controllers
         * To edit an employee in the database.
         * return employee detail
         **/
-        [HttpPut("{id}/{fName}/{lName}/{username}/{password}/{isAdmin}/", Name = "PutEmployeeDetail")]
+        [HttpPut("{id}/{fName}/{lName}/{username}/{password}/{isAdmin}/{inactive}", Name = "PutEmployeeDetail")]
         public Models.Employee PutEmployeeDetail([FromRoute(Name = "id")] int id,
                                                         [FromRoute(Name = "fName")] string fName,
                                                         [FromRoute(Name = "lName")] string lName,
                                                         [FromRoute(Name = "username")] string username,
                                                         [FromRoute(Name = "password")] string password,
-                                                        [FromRoute(Name = "isAdmin")] bool isAdmin)
+                                                        [FromRoute(Name = "isAdmin")] bool isAdmin,
+                                                        [FromRoute(Name = "inactive")] bool inactive)
         {
             con.Open();
 
             SqlCommand cmd = new SqlCommand("update AllwellInventory.dbo.employee set fName = '" + fName + "'," +
-                "lName = '" + lName + "', username = '" + username + "', password = '" + password + "', isAdmin = " + 
-                (isAdmin ? 1 : 0) + " where id =" + id, con);
+                "lName = '" + lName + "', username = '" + username + "', password = '" + password + "', isAdmin = " +
+                (isAdmin ? 1 : 0) + ", inactive = " + (inactive ? 1 : 0) + " where id =" + id, con);
 
             cmd.ExecuteNonQuery();
 
@@ -102,17 +103,18 @@ namespace AllwellInventory.Controllers
          * To add an employee to the database.
         * return employee detail
            **/
-        [HttpPost("{fName}/{lName}/{username}/{password}/{isAdmin}", Name = "AddEmployee")]
+        [HttpPost("{fName}/{lName}/{username}/{password}/{isAdmin}/{inactive}", Name = "AddEmployee")]
         public bool AddEmployee([FromRoute(Name = "fName")] string fName,
                                         [FromRoute(Name = "lName")] string lName,
                                         [FromRoute(Name = "username")] string username,
                                         [FromRoute(Name = "password")] string password,
-                                        [FromRoute(Name = "isAdmin")] bool isAdmin)
+                                        [FromRoute(Name = "isAdmin")] bool isAdmin,
+                                        [FromRoute(Name = "inactive")] bool inactive)
         {
             con.Open();
 
             SqlCommand cmd = new SqlCommand("insert into AllwellInventory.dbo.employee values('" + fName + "', '" + lName + "', '" +
-                username + "', '" + password + "', " + (isAdmin ? 1 : 0) + ", null)", con);
+                username + "', '" + password + "', " + (isAdmin ? 1 : 0) + ", " + (inactive ? 1 : 0) + ")", con);
 
             cmd.ExecuteNonQuery();
 
@@ -163,7 +165,7 @@ namespace AllwellInventory.Controllers
             return e;
         }
 
-        
+
         /**
          * GET api/<EmployeeController>/string/string
          * Get an employee using the username and password.
