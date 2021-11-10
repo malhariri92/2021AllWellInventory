@@ -2,54 +2,48 @@
   <div>   
     <div class="w3-display-container">
       <div v-if="store.userState.user !== null">
-        <h2>Products</h2>        
+        <h2><b>Inventory</b></h2>        
           <button v-if="store.userState.user.isAdmin" class="w3-button w3-blue w3-round-xxlarge w3-display-topright w3-margin-right w3-hover-text-black" @click="showDetails(0)">
-            <b><font-awesome-icon icon="plus-circle" class="icons"/> Add New Product</b>
+            <b><font-awesome-icon icon="plus-circle" class="icons"/> Product</b>
           </button>
       </div>
-    <div class="w3-row margin-bottom-10">
-      <div class="w3-quarter">
-        <div class="w3-right-align">Search by 
-          <select class="w3-round-large margin-left-5 align-v-center" v-model="state.searchBy" @change="clearString">
+    <div class="w3-table">
+      <div class="w3-row w3-border-top w3-medium w3-padding">
+        Search by 
+          <select class="w3-padding-small w3-round-xxlarge" v-model="state.searchBy" @change="clearString">
             <option value="name">Name</option>
             <option value="type">Type</option>
             <option value="location">Location</option>
-          </select>:
-        </div>
-      </div>
+          </select> : 
 
-      <div class="w3-quarter">
-        <div class="w3-left-align" v-if="state.searchBy === 'name'">
-          <input type="text" v-model="state.searchString" @keyup="search">
-        </div>
+        <span v-if="state.searchBy === 'name'">
+          <input type="text" class="w3-margin-right w3-padding-small w3-round-xxlarge" style="border-width:1px;" v-model="state.searchString" @keyup="search">
+        </span>
 
-        <div class="w3-left-align" v-if="state.searchBy === 'type'">
-          <select class="margin-left-5" v-model="state.searchType" @change="search">
+        <span v-if="state.searchBy === 'type'">
+          <select class="w3-padding-small w3-round-xxlarge w3-margin-right" v-model="state.searchType" @change="search">
             <option v-for="(type, id) in state.types" :key="id" :value="type.name">{{ type.name }}</option>
           </select>
-        </div>
+        </span>
 
-        <div class="w3-left-align" v-if="state.searchBy === 'location'">
-          <select class="margin-left-5" v-model="state.searchLocation" @change="search">
+        <span  v-if="state.searchBy === 'location'">
+          <select class="w3-padding-small w3-round-xxlarge w3-margin-right" v-model="state.searchLocation" @change="search">
             <option v-for="(location, id) in state.locations" :key="id" :value="location.name">{{ location.name }}</option>
           </select>
-        </div>
-      </div>
+        </span>      
 
-      <div class="w3-quarter w3-center">
+      <span style="white-space:nowrap;">
         <input class="w3-check" type="checkbox" name="damaged" v-model="state.includeDamaged" @change="refreshProducts()">
-        <label class="" for="damaged">Include Damaged</label>
-        <div class="align-v-center" v-if="state.includeDamaged">Value: {{ new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(state.damageCost) }}</div>
-      </div>
+        <label class="w3-margin-right" for="damaged"> Damaged</label>
+        <button class="w3-button w3-border w3-padding-small w3-round-xxlarge" @click="clearSearch">Clear Search</button>
+      </span>
 
-      <div class="w3-quarter w3-left-align">
-        <button class="w3-button w3-round-large color-red" @click="clearSearch">Clear</button>
       </div>
-      
+      <div class="w3-row w3-red w3-sepia-min w3-padding-small" v-if="state.includeDamaged">Damaged value: {{ new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(state.damageCost) }}</div>
     </div>
 
-    <table class="w3-table-all">
-      <tr style="background-color: var(--blue)">
+    <table class="w3-table-all w3-border-0">
+      <tr class="w3-blue">
         <th class="w3-center cell-v-center" @click="sortByName">Name
           <img src="@/assets/images/downIcon.png" style="height: .75em; width: .75em" v-show="state.sort.onName === 1">
           <img src="@/assets/images/upIcon.png" style="height: .75em; width: .75em" v-show="state.sort.onName === -1">
