@@ -28,14 +28,14 @@
         <div v-if="!state.isValidPassword">
         <p class="font-color-red">Password is required!</p>
         </div>
-        <label class="w3-left w3-margin-left"  v-if="(state.isValidPassword & state.ogPassword !== state.employee.password)">Verify Password</label>
-        <div class="input-container w3-animate-opacity" v-if="(state.isValidPassword & state.ogPassword !== state.employee.password)">
+        <label class="w3-left w3-margin-left"  v-if="(state.title === 'Add' || state.isValidPassword & state.ogPassword !== state.employee.password)">Verify Password</label>
+        <div class="input-container w3-animate-opacity" v-if="(state.title === 'Add' || state.isValidPassword & state.ogPassword !== state.employee.password)">
           <input v-model="state.verify" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" @keyup="verifyPassword"  type="password">
           <i class="icon"><font-awesome-icon :icon="state.passMatch" class="icons w3-xlarge" :class="state.passMatchColor" /></i>
         </div>
         
         <div class="checkboxes"><div style="padding-right:50px"><input v-model="state.employee.isAdmin" class="w3-check" type="checkbox" > <label>Admin</label></div>
-        <div><input v-model="state.employee.inactive" class="w3-check" type="checkbox"> <label>Inactive</label></div></div>
+        <div><input v-model="state.employee.inactive" v-if="state.title === 'Edit'" class="w3-check" type="checkbox"> <label v-if="state.title === 'Edit'">Inactive</label></div></div>
         <button class="w3-button w3-blue w3-round-xxlarge" style="width: 100%;" @click="updateEmployee"><b>{{ state.title }}</b></button>
         </div>
     </div>
@@ -90,7 +90,7 @@ export default {
     });
 
     function verifyPassword() {
-      if (state.employee.password === state.verify){
+      if (state.employee.password === state.verify && state.employee.password !== ''){
         state.passMatchColor = 'w3-text-green';
         state.passMatch = 'check-circle';
         return true;
@@ -131,7 +131,9 @@ export default {
         }
         success = await postEmployee(state.employee.fName, state.employee.lName,
                                       state.employee.username, state.employee.password, state.employee.isAdmin, state.employee.inactive);
-                                      
+        state.verify = '';
+        state.ogPassword = '';
+                        
       }
       else {
         if(typeof(state.employee.isAdmin) === 'undefined')
@@ -146,6 +148,8 @@ export default {
                                               state.employee.username, state.employee.password,
                                               state.employee.isAdmin, state.employee.inactive);
       }
+      state.verify = '';
+      state.ogPassword = '';
       context.emit('closeDetailModal', true);
       console.log(success);
 
