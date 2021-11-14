@@ -43,7 +43,7 @@
         <p class="font-color-red">Please select a location!</p>
         </div>
         <label class="w3-left w3-margin-left">Cost</label>
-        <input  v-model="state.product.cost" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
+        <input  v-model="state.product.cost" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="number">
         <div v-if="!state.isValidCost">
         <p class="font-color-red">Cost is required!</p>
         </div>
