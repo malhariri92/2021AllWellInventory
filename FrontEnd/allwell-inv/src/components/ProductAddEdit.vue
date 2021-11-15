@@ -8,44 +8,59 @@
             <font-awesome-icon icon="window-close" class="icons w3-xlarge" />
           </a>
           
-          <div v-if="store.userState.user.isAdmin">
-            <button @click="showLogsModal()" 
-              class="w3-button w3-blue w3-round-xxlarge w3-display-topleft w3-margin w3-hover-text-black">
-              <b> <font-awesome-icon icon="user-plus" class="icons" />Assign</b>
-            </button>
+        <div v-if="store.userState.user.isAdmin">
+        <button @click="showLogsModal()" 
+          class="w3-button w3-blue w3-round-xxlarge w3-display-topleft w3-margin w3-hover-text-black">
+          <b> <font-awesome-icon icon="user-plus" class="icons" />Assign</b>
+        </button>
 
-            <a @click="close" class="w3-display-topright w3-margin w3-text-grey w3-hover-text-black">
-              <font-awesome-icon icon="window-close" class="icons w3-xlarge" />
-            </a>
-
-            <div class="w3-cell-row">
-              <div class="w3-cell">
-                <h2><b>{{ state.title }} </b></h2>
-              </div> 
-            </div> 
-
-            <label class="w3-left w3-margin-left">Product Name</label>
-            <input v-model="state.product.name" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
-
-            <div v-if="!state.isValidName">
-              <p class="font-color-red">Product name is required!</p>
-            </div>
-
-            <label class="w3-left w3-margin-left">Type</label>
-            <select class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" v-model="state.selectedType" @change="typeChange">
-              <option  v-if="state.title === 'Add Product'" selected disabled value>Choose a type</option>
-              <option v-for="(type, typeId) in state.types" :key="typeId" :value="type.typeId">{{ type.name }}</option>
-            </select>
-
-            <div v-if="!state.isValidType">
-              <p class="font-color-red">Please select a type!</p>
-            </div>
-
-            <label class="w3-left w3-margin-left">Location</label>
-            <select class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" v-model="state.selectedLocation" @change="locationChange">
-              <option v-if="state.title === 'Add Product'" selected disabled value>Choose a location</option>
-              <option v-for="(location, locationId) in state.locations" :key="locationId" :value="location.locationId">{{ location.name }}</option>
-            </select>
+        <a @click="close" class="w3-display-topright w3-margin w3-text-grey w3-hover-text-black">
+          <font-awesome-icon icon="window-close" class="icons w3-xlarge" /></a>
+        <div class="w3-cell-row">
+          <div class="w3-cell">
+            <h2><b>{{ state.title }} </b></h2>
+          </div> 
+        </div> 
+        <label class="w3-left w3-margin-left">Product Name</label>
+        <input v-model="state.product.name" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
+        <div v-if="!state.isValidName">
+        <p class="font-color-red">Product name is required!</p>
+        </div>
+        <label class="w3-left w3-margin-left">Type</label>
+        <select class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" v-model="state.selectedType" @change="typeChange">
+          <option  v-if="state.title === 'Add Product'" selected disabled value>Choose a type</option>
+          <option v-for="(type, typeId) in state.types" :key="typeId" :value="type.typeId">{{ type.name }}</option>
+        </select>
+        <div v-if="!state.isValidType">
+        <p class="font-color-red">Please select a type!</p>
+        </div>
+        <label class="w3-left w3-margin-left">Location</label>
+        <select class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" v-model="state.selectedLocation" @change="locationChange">
+          <option v-if="state.title === 'Add Product'" selected disabled value>Choose a location</option>
+          <option v-for="(location, locationId) in state.locations" :key="locationId" :value="location.locationId">{{ location.name }}</option>
+        </select>
+        <div v-if="!state.isValidLocation">
+        <p class="font-color-red">Please select a location!</p>
+        </div>
+        <label class="w3-left w3-margin-left">Cost</label>
+        <input  v-model="state.product.cost" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="number">
+        <div v-if="!state.isValidCost">
+        <p class="font-color-red">Cost is required!</p>
+        </div>
+        <label class="w3-left w3-margin-left">Condition</label>
+        <input  v-model="state.product.condition" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
+        <div v-if="!state.isValidCondition">
+        <p class="font-color-red">Condition is required!</p>
+        </div>
+        <label class="w3-left w3-margin-left">Serial Number</label>
+        <input  v-model="state.product.serialNo" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text" required>
+        <div v-if="!state.isValidSerial">
+        <p class="font-color-red">Serial number is required!</p>
+        </div>
+        <p><input  v-model="state.product.damaged" class="w3-check " type="checkbox"> <label>Damaged</label></p>
+        <button v-if="store.userState.user.isAdmin" class="w3-button w3-blue w3-round-xxlarge" style="width: 100%;" 
+        @click="updateProduct"><b>{{ state.title }}</b></button>
+        </div>
 
             <div v-if="!state.isValidLocation">
               <p class="font-color-red">Please select a location!</p>
