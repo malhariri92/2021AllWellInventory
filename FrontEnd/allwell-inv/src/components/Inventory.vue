@@ -10,11 +10,11 @@
     <div class="w3-table">
       <div class="w3-row w3-border-top w3-medium w3-padding">
         Search by 
-          <select class="w3-padding-small w3-round-xxlarge" v-model="state.searchBy" @change="clearString">
-            <option value="name">Name</option>
-            <option value="type">Type</option>
-            <option value="location">Location</option>
-          </select> : 
+        <select class="w3-padding-small w3-round-xxlarge" v-model="state.searchBy" @change="clearString">
+          <option value="name">Name</option>
+          <option value="type">Type</option>
+          <option value="location">Location</option>
+        </select> : 
 
         <span v-if="state.searchBy === 'name'">
           <input type="text" class="w3-margin-right w3-padding-small w3-round-xxlarge" style="border-width:1px;" v-model="state.searchString" @keyup="search">
@@ -118,19 +118,14 @@
 
       async function showDetails(productId) {
         state.selectedProductId = productId;
-       state.showDetails = true;
-
+        state.showDetails = true;
       }
       
-      async function closeDetailModal(success) {
-        if (success === false) {
-          state.showDetails = false;
-        }
+      async function closeDetailModal() {
         state.showDetails = false;
         clearString();
         await refreshProducts();
       }
-
 
 //#region 'sorting'
       function resetSortObject() {
@@ -305,7 +300,7 @@
         refreshProducts,
         clearSearch,
         closeDetailModal,
-        store,
+        store
       }
     }
   }

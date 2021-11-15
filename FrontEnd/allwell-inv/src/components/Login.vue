@@ -1,100 +1,93 @@
 <template>
   <div>
-    <div
-      class="login-container w3-container w3-light-grey w3-round-xxlarge"
-      title="LogIn"
-    >
+    <div class="login-container w3-container w3-light-grey w3-round-xxlarge" title="LogIn">
       <h2>Login</h2>
       <div class="input-field">
         <font-awesome-icon icon="user" class="icons" />
         <input type="text" v-model="state.userName" placeholder="Username" />
       </div>
+
       <div v-if="state.isUserEmpty">
         <p class="font-color-red">Please enter your username</p>
       </div>
+
       <div class="input-field">
         <font-awesome-icon icon="lock" class="icons" />
-        <input
-          type="password"
-          v-model="state.password"
-          placeholder="Password"
-        />
+        <input type="password" v-model="state.password" placeholder="Password"/>
       </div>
+
       <div v-if="state.isPasswordEmpty">
         <p class="font-color-red">Please enter your password</p>
       </div>
+
       <div v-if="!state.isValidUser">
         <p class="font-color-red">Invalid username or password</p>
       </div>
-      <button
-        @click="validateUser()"
-        class="w3-button w3-round-xxlarge w3-blue w3-hover-cyan">
-        LOGIN
-      </button>
+      <button @click="validateUser()" class="w3-button w3-round-xxlarge w3-blue w3-hover-cyan">LOGIN</button>
     </div>
   </div>
 </template>
 
 <script>
-import { reactive, inject } from 'vue';
-import { useRouter } from 'vue-router';
-
-export default {
-  name: "Login",
-
-  setup() {
-    const state = reactive({
-      userName: "",
-      password: "",
-      isUserEmpty: false,
-      isPasswordEmpty: false,
-      employee: {'id':0},
-      isValidUser: true,
-    });
-
-    const router = useRouter();
-    const store = inject('store');
-
-    /**
-     * check if the username or password are empty
-     * to display error messages
-     */
-    function validateUser() {
-      if (state.userName === "") {
-        state.isUserEmpty = true;
-        state.isPasswordEmpty = false;
-        state.isValidUser = true;
-      } else if (state.password === "") {
-        state.isUserEmpty = false;
-        state.isPasswordEmpty = true;
-        state.isValidUser = true;
-      } else {
-        state.isUserEmpty = false;
-        state.isPasswordEmpty = false;
-        doValidateUser();
+  import { reactive, inject } from 'vue';
+  import { useRouter } from 'vue-router';
+  
+  export default {
+    name: "Login",
+  
+    setup() {
+      const state = reactive({
+        userName: "",
+        password: "",
+        isUserEmpty: false,
+        isPasswordEmpty: false,
+        employee: {'id':0},
+        isValidUser: true,
+      });
+  
+      const router = useRouter();
+      const store = inject('store');
+  
+      /**
+       * check if the username or password are empty
+       * to display error messages
+       */
+      function validateUser() {
+        if (state.userName === "") {
+          state.isUserEmpty = true;
+          state.isPasswordEmpty = false;
+          state.isValidUser = true;
+        } else if (state.password === "") {
+          state.isUserEmpty = false;
+          state.isPasswordEmpty = true;
+          state.isValidUser = true;
+        } else {
+          state.isUserEmpty = false;
+          state.isPasswordEmpty = false;
+          doValidateUser();
+        }
       }
-    }
-    /**
-     * do the actual validation for user.
-     */
-    async function doValidateUser() {
-      state.employee = await store.methods.login(state.userName, state.password);
-      
-      if (JSON.stringify(state.employee) === "false") {
-        state.isValidUser = false;
-      } else {
-        router.push('/inventory');
+      /**
+       * do the actual validation for user.
+       */
+      async function doValidateUser() {
+        state.employee = await store.methods.login(state.userName, state.password);
+        
+        if (JSON.stringify(state.employee) === "false") {
+          state.isValidUser = false;
+        } else {
+          router.push('/inventory');
+        }
       }
-    }
-
-    return {
-      state,
-      validateUser,
-      doValidateUser,
-      store
-    };
-  },
-};
+  
+      return {
+        state,
+        validateUser,
+        doValidateUser,
+        store
+      };
+    },
+  };
 </script>
 
 <style scoped>

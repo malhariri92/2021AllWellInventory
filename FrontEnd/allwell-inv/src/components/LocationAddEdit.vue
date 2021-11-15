@@ -8,131 +8,132 @@
             <h2><b>{{ state.title }} Location</b></h2>
           </div> 
         </div> 
+
         <label class="w3-left w3-margin-left">Name</label>
         <input v-model="state.location.name" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
+        
         <div v-if="!state.isValidName">
-        <p class="font-color-red">Location name is required!</p>
+          <p class="font-color-red">Location name is required!</p>
         </div>
+
         <label class="w3-left w3-margin-left">City</label>
         <input v-model="state.location.city" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
+        
         <div v-if="!state.isValidCity">
-        <p class="font-color-red">City is required!</p>
+          <p class="font-color-red">City is required!</p>
         </div>
+
         <label class="w3-left w3-margin-left">County</label>
         <input  v-model="state.location.county" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
+        
         <div v-if="!state.isValidCounty">
-        <p class="font-color-red">County is required!</p>
+          <p class="font-color-red">County is required!</p>
         </div>
+
         <button class="w3-button w3-blue w3-round-xxlarge" style="width: 100%;" @click="updateLocation"><b>{{ state.title }}</b></button>
-        </div>
+      </div>
     </div>
   </div>
 </template>
 
 
 <script>
-import { reactive, watch } from 'vue';
-import { repository } from '@/store/repository.js';
+  import { reactive, watch } from 'vue';
+  import { repository } from '@/store/repository.js';
 
-export default {
-  name: 'locationAddEdit',
-  props: ['showModal', 'locationId'],
+  export default {
+    name: 'locationAddEdit',
+    props: ['showModal', 'locationId'],
 
-  emits: ['closeDetailModal'],
+    emits: ['closeDetailModal'],
 
-  setup(props, context) {
-    const state = reactive({
-      location: {},
-      title: '',
-      isValidName: true,
-      isValidCity: true,
-      isValidCounty: true,
-    });
+    setup(props, context) {
+      const state = reactive({
+        location: {},
+        title: '',
+        isValidName: true,
+        isValidCity: true,
+        isValidCounty: true,
+      });
 
-    const{
-      putLocationDetail,
-      getLocationDetail,
-      postLocation
-    }= repository();
+      const{
+        putLocationDetail,
+        getLocationDetail,
+        postLocation
+      }= repository();
 
 
-    watch(props, async function() {
+      watch(props, async function() {
         if (props.showModal === true) {
           if (props.locationId !== 0) {
             state.location = await getLocationDetail(props.locationId);
             state.title = 'Edit';
-          }
-          else {
+          } else {
             state.location = {};
             state.title = 'Add';
-           }
+            }
         }
-    });
+      });
 
-    function close() {
-      setErrorMessages();
-      context.emit('closeDetailModal', false);
-    }
-
-    function closeLogsModal(success) {
-      if (success === false) {
-        state.showLogsModal = false;
+      function close() {
+        setErrorMessages();
+        context.emit('closeDetailModal', false);
       }
-      state.showDetails = false;
-    }
 
-    async function updateLocation() {
-      let success = false;
-      setErrorMessages();
-      if(!validateData()) return;
-      if (props.locationId === 0) {
-        success = await postLocation(state.location.name, state.location.city, state.location.county);                           
+      function closeLogsModal(success) {
+        if (success === false) {
+          state.showLogsModal = false;
+        }
+        state.showDetails = false;
       }
-      else {
-      state.location = await putLocationDetail(state.location.locationId, state.location.name, state.location.city,
-                                              state.location.county);
-      }
-      context.emit('closeDetailModal', true);
-      console.log(success);
-    }
 
-function validateData()
-    {
-       if(typeof(state.location.name) === 'undefined' || state.location.name === '')
-        {
+      async function updateLocation() {
+        let success = false;
+        setErrorMessages();
+
+        if(!validateData()) return;
+          if (props.locationId === 0) {
+            success = await postLocation(state.location.name, state.location.city, state.location.county);                           
+          } else {
+          state.location = await putLocationDetail(state.location.locationId, state.location.name, state.location.city,
+                                                  state.location.county);
+          }
+        context.emit('closeDetailModal', true);
+      }
+    
+      function validateData() {
+        if(typeof(state.location.name) === 'undefined' || state.location.name === '') {
           state.isValidName = false;
           return false;
         }
-        if(typeof(state.location.city) === 'undefined' || state.location.city === '')
-        {
+
+        if(typeof(state.location.city) === 'undefined' || state.location.city === '') {
           state.isValidCity = false;
           return false;
         }
-       if(typeof(state.location.county) === 'undefined' || state.location.county === '')
-        {
+        
+        if(typeof(state.location.county) === 'undefined' || state.location.county === '') {
           state.isValidCounty = false;
           return false;
         }
-        
+
         return true;
-    }
+      }
 
-    function setErrorMessages()
-    {
-      state.isValidName = true;
-      state.isValidCity = true;
-      state.isValidCounty = true;
-    }
+      function setErrorMessages() {
+        state.isValidName = true;
+        state.isValidCity = true;
+        state.isValidCounty = true;
+      }
 
-    return {
-      state,
-      close,
-      closeLogsModal,
-      updateLocation
+      return {
+        state,
+        close,
+        closeLogsModal,
+        updateLocation
+      }
     }
   }
-}
-
 </script>
 
 <style scoped>
