@@ -8,7 +8,7 @@
           </a>
           
           <div v-if="store.userState.user.isAdmin">
-            <button @click="showLogsModal()" 
+            <button @click="showLogsModal()" v-if="state.title === 'Edit Product'"
               class="w3-button w3-blue w3-round-xxlarge w3-display-topleft w3-margin w3-hover-text-black">
               <b> <font-awesome-icon icon="user-plus" class="icons" />Assign</b>
             </button>
@@ -73,7 +73,7 @@
         
             <p>
               <input  v-model="state.product.damaged" class="w3-check " type="checkbox"> 
-              <label>Damaged</label>
+              <label> Damaged</label>
             </p>
 
             <button v-if="store.userState.user.isAdmin" class="w3-button w3-blue w3-round-xxlarge" style="width: 100%;" 
@@ -178,7 +178,7 @@
     }
 
     function closeLogsModal() {
-      state.showDetails = false;
+      state.showLogsModal = false;
     }
 
     function typeChange() {

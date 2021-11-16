@@ -143,7 +143,7 @@
       }
     
       function close() {
-        context.emit('closeLogsModal', false);
+        context.emit('closeLogsModal', true);
       }
       
       return {

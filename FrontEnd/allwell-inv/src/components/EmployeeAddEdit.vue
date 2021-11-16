@@ -2,69 +2,46 @@
   <div class="w3-modal w3-animate-opacity" style="display:block; padding-top:50px;" v-show="showModal === true">
     <div class="w3-modal-content" style="max-width:500px">
       <div class="w3-container w3-col w3-light-grey w3-round-xxlarge w3-padding-16 w3-margin-bottom">
-        <a @click="close" class="w3-display-topright w3-margin w3-text-grey w3-hover-text-black">
-          <font-awesome-icon icon="window-close" class="icons w3-xlarge" />
-        </a>
-        
+        <a @click="close" class="w3-display-topright w3-margin w3-text-grey w3-hover-text-black"><font-awesome-icon icon="window-close" class="icons w3-xlarge" /></a>
         <div class="w3-cell-row">
           <div class="w3-cell">
             <h2><b>{{ state.title }} Employee</b></h2>
           </div> 
         </div> 
-        
         <label class="w3-left w3-margin-left">First Name</label>
         <input v-model="state.employee.fName" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
-        
         <div v-if="!state.isValidfName">
-          <p class="font-color-red">Please enter your first name!</p>
+        <p class="font-color-red">Please enter your first name!</p>
         </div>
-
         <label class="w3-left w3-margin-left">Last Name</label>
         <input v-model="state.employee.lName" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
-        
         <div v-if="!state.isValidlName">
-          <p class="font-color-red">Please enter your last name!</p>
+        <p class="font-color-red">Please enter your last name!</p>
         </div>
-
         <label class="w3-left w3-margin-left">Username</label>
         <input  v-model="state.employee.username" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
-        
         <div v-if="!state.isValidUserName">
-          <p class="font-color-red">Please enter your username!</p>
+        <p class="font-color-red">Please enter your username!</p>
         </div>
-
         <label class="w3-left w3-margin-left">Password</label> 
         <input v-model="state.employee.password" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" @keyup="verifyPassword" type="password">
-        
         <div v-if="!state.isValidPassword">
-          <p class="font-color-red">Password is required!</p>
+        <p class="font-color-red">Password is required!</p>
         </div>
 
         <label class="w3-left w3-margin-left"  v-if="(state.title === 'Add' || state.ogPassword !== state.employee.password)">Verify Password</label>
-
         <div class="input-container w3-animate-opacity" v-if="(state.title === 'Add' || state.ogPassword !== state.employee.password)">
           <input v-model="state.verify" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" @keyup="verifyPassword"  type="password">
           <i class="icon"><font-awesome-icon :icon="state.passMatch" class="icons w3-xlarge" :class="state.passMatchColor" /></i>
         </div>
-
         <div v-if="!state.isPasswordsMatch">
-          <p class="font-color-red">Passwords do not match!</p>
+        <p class="font-color-red">Passwords do not match!</p>
         </div>
 
-        <div class="checkboxes">
-          <div style="padding-right:50px">
-            <input v-model="state.employee.isAdmin" class="w3-check" type="checkbox" > 
-            <label>Admin</label>
-          </div>
-
-          <div v-if="state.title === 'Edit'">
-            <input v-model="state.employee.inactive" class="w3-check" type="checkbox"> 
-            <label >Inactive</label>
-          </div>
-        </div>
-
+        <div class="checkboxes"><div style="padding-right:50px"><input v-model="state.employee.isAdmin" class="w3-check" type="checkbox" > <label> Admin</label></div>
+        <div><input v-model="state.employee.inactive" v-if="state.title === 'Edit'" class="w3-check" type="checkbox"> <label v-if="state.title === 'Edit'"> Inactive</label></div></div>
         <button class="w3-button w3-blue w3-round-xxlarge" style="width: 100%;" @click="updateEmployee"><b>{{ state.title }}</b></button>
-      </div>
+        </div>
     </div>
   </div>
 </template>
@@ -111,20 +88,26 @@
             state.ogPassword = state.employee.password;
           } else {
             state.title = 'Add';
+            state.employee = {};
           }
         }
       });
 
       function verifyPassword() {
-        state.isValidPassword = true;
-        state.isPasswordsMatch = true;
-
-        if (state.employee.password === state.verify && state.employee.password !== '') {
-          state.passMatchColor = 'w3-text-green';
-          state.passMatch = 'check-circle';
-          return true;
-        }
+      state.isValidPassword = true;
+      state.isPasswordsMatch = true;
+      if (state.employee.password === state.verify && state.employee.password !== ''){
+        state.passMatchColor = 'w3-text-green';
+        state.passMatch = 'check-circle';
+        return true;
       }
+      else {
+        state.passMatchColor = 'w3-text-red';
+        state.passMatch = 'times-circle';
+        return false;
+      }
+    }
+
 
       function close() {
         state.ogPassword = '';
