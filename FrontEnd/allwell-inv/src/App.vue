@@ -10,6 +10,19 @@
           <button v-if="store.userState.user.isAdmin" class="w3-bar-item w3-text-grey w3-button w3-small w3-round-large w3-margin-top" @click="doRoute('type')"><font-awesome-icon icon="laptop" class="icons w3-large" /> <div>Types</div></button>
           <button  class="w3-bar-item w3-text-grey w3-small w3-button w3-round-large w3-margin-top w3-right" @click="store.methods.logout()"><font-awesome-icon icon="sign-out-alt" class="icons w3-large" /> <div>Logout</div></button>
         </div>
+        <div v-if="store.userState.user !== null" class="w3-hide-medium w3-hide-large w3-animate-opacity">
+          <div class="w3-dropdown-hover w3-hover-light-grey w3-text-grey w3-button w3-round-large w3-margin-top w3-white">
+            <font-awesome-icon icon="bars" class="icons w3-large" /><div> Menu</div>
+            <div class="w3-dropdown-content w3-bar-block w3-round-large w3-card-4"> 
+              <button class="w3-bar-item w3-text-grey w3-button w3-round-large" @click="doRoute('inventory')"><font-awesome-icon icon="dolly-flatbed" class="icons w3-large" />  Inventory</button>
+              <button v-if="store.userState.user.isAdmin" class="w3-bar-item w3-text-grey w3-button w3-round-large" @click="doRoute('employee')"><font-awesome-icon icon="users" class="icons w3-large" /> Employees</button>
+              <button v-if="store.userState.user.isAdmin" class="w3-bar-item w3-text-grey w3-button w3-round-large" @click="doRoute('location')"><font-awesome-icon icon="map-marker-alt" class="icons w3-large" /> Locations</button>
+              <button v-if="store.userState.user.isAdmin" class="w3-bar-item w3-text-grey w3-button w3-round-large" @click="doRoute('type')"><font-awesome-icon icon="laptop" class="icons w3-large" /> Types</button>
+              <button  v-if="store.userState.user !== null" class="w3-bar-item w3-text-grey w3-button w3-round-large" @click="store.methods.logout()"><font-awesome-icon icon="sign-out-alt" class="icons w3-large" /> Logout</button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
     <router-view/>
