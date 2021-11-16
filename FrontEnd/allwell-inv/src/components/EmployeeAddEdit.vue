@@ -57,9 +57,9 @@
             <label>Admin</label>
           </div>
 
-          <div>
-            <input v-model="state.employee.inactive" v-if="state.title === 'Edit'" class="w3-check" type="checkbox"> 
-            <label v-if="state.title === 'Edit'">Inactive</label>
+          <div v-if="state.title === 'Edit'">
+            <input v-model="state.employee.inactive" class="w3-check" type="checkbox"> 
+            <label >Inactive</label>
           </div>
         </div>
 
