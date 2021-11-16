@@ -94,6 +94,7 @@
         if(!validateData()) return;
           if (props.locationId === 0) {
             success = await postLocation(state.location.name, state.location.city, state.location.county);                           
+            console.log(success)
           } else {
           state.location = await putLocationDetail(state.location.locationId, state.location.name, state.location.city,
                                                   state.location.county);

@@ -44,7 +44,7 @@
         putTypeDetail,
         getTypeDetail,
         postType
-      }= repository();
+      } = repository();
 
 
       watch(props, async function() {
@@ -52,11 +52,10 @@
           if (props.typeId !== 0) {
             state.type = await getTypeDetail(props.typeId);
             state.title = 'Edit';
-          }
-          else {
+          } else {
             state.type = {};
             state.title = 'Add';
-            }
+          }
         }
       });
 
@@ -70,15 +69,15 @@
       }
 
       async function updateType() {
-        let success = false;
         setErrorMessages();
 
         if(!validateData()) return;
-          if (props.typeId === 0) {
-            success = await postType(state.type.name);                           
-          } else {
-            state.type = await putTypeDetail(state.type.typeId, state.type.name);
-          }
+
+        if (props.typeId === 0) {
+          await postType(state.type.name);                           
+        } else {
+          state.type = await putTypeDetail(state.type.typeId, state.type.name);
+        }
 
         context.emit('closeDetailModal', true);
       }
