@@ -79,39 +79,6 @@
             <button v-if="store.userState.user.isAdmin" class="w3-button w3-blue w3-round-xxlarge" style="width: 100%;" 
             @click="updateProduct"><b>{{ state.title }}</b></button>
           </div>
-
-          <div v-if="!state.isValidLocation">
-            <p class="font-color-red">Please select a location!</p>
-          </div>
-
-          <label class="w3-left w3-margin-left">Cost</label>
-          <input  v-model="state.product.cost" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
-
-          <div v-if="!state.isValidCost">
-            <p class="font-color-red">Cost is required!</p>
-          </div>
-
-          <label class="w3-left w3-margin-left">Condition</label>
-          <input  v-model="state.product.condition" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text">
-
-          <div v-if="!state.isValidCondition">
-            <p class="font-color-red">Condition is required!</p>
-          </div>
-
-          <label class="w3-left w3-margin-left">Serial Number</label>
-          <input  v-model="state.product.serialNo" class="w3-input w3-round-xxlarge w3-border-0 w3-margin-bottom w3-padding" type="text" required>
-
-          <div v-if="!state.isValidSerial">
-            <p class="font-color-red">Serial number is required!</p>
-          </div>
-
-          <p>
-            <input  v-model="state.product.damaged" class="w3-check " type="checkbox">
-            <label>Damaged</label>
-          </p>
-
-          <button v-if="store.userState.user.isAdmin" class="w3-button w3-blue w3-round-xxlarge" style="width: 100%;" 
-                @click="updateProduct"><b>{{ state.title }}</b></button>
         </div>
 
         <div v-if="(!store.userState.user.isAdmin && showModal)">
