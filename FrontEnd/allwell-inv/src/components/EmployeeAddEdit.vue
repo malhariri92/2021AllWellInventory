@@ -109,6 +109,8 @@
             state.employee = await getEmployeeDetail(props.employeeId);
             state.title = 'Edit';
             state.ogPassword = state.employee.password;
+          } else {
+            state.title = 'Add';
           }
         }
       });
