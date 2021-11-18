@@ -89,6 +89,11 @@
           } else {
             state.title = 'Add';
             state.employee = {};
+            state.isValidfName = true;
+            state.isValidlName = true;
+            state.isValidUserName = true;
+            state.isValidPassword = true;
+            state.isPasswordsMatch = true;
           }
         }
       });
