@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/allwellinventorydbserver/databases/AllwellInventory_db",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:Database",
+      "secretStore": "AzureAppSettings"
+    }
+  }
+}

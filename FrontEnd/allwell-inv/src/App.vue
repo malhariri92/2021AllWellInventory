@@ -42,7 +42,7 @@ export default {
     provide('store', store);
 
     watch(() => store.userState.user, () => {
-      if(store.userState.user === null)
+      if(store.userState.user === null | store.userState.user === 'false')
       {
         router.push('/');
       }
@@ -51,7 +51,7 @@ export default {
     router.beforeEach((to, from, next) => {
       if(to.path !== '/' && store.userState.user === null) {
         next('/');
-      } else if(to.path === '/' && store.userState.user !== null) {
+      } else if(to.path === '/' && store.userState.user) {
         next('/inventory');
       }
       else {

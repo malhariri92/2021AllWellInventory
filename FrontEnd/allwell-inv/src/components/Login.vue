@@ -67,6 +67,7 @@
           doValidateUser();
         }
       }
+<<<<<<< Updated upstream
       /**
        * do the actual validation for user.
        */
@@ -78,6 +79,19 @@
         } else {
           router.push('/inventory');
         }
+=======
+    }
+    /**
+     * do the actual validation for user.
+     */
+    async function doValidateUser() {
+      state.employee = await store.methods.login(state.userName, state.password);
+      
+      if (state.employee === null) {
+        state.isValidUser = false;
+      } else {
+        router.push('/inventory');
+>>>>>>> Stashed changes
       }
   
       return {

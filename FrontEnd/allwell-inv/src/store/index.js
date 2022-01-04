@@ -6,14 +6,21 @@ const userState = reactive({
 
 const methods = {
    async login(userName, password){
-        const url = 'https://localhost:44364/api/Employee/' + userName + '/' + password;
+        const url = 'https://allwellinventory.azurewebsites.net/api/Employee/' + userName + '/' + password;
         
             await fetch(url)
             .then(response => response.json())
             .then(function (data) {
                 userState.user = data;
             })
-            sessionStorage.setItem('user', JSON.stringify(userState.user));
+            if (JSON.stringify(userState.user) !== 'false')
+            {
+                sessionStorage.setItem('user', JSON.stringify(userState.user));
+            }
+            else 
+            {
+                userState.user = null;
+            }
             return userState.user;
     },
 
